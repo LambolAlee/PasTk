@@ -11,6 +11,10 @@ class Window:
         pass
 
     @classmethod
+    def report(cls, log):
+        print(f"[{cls.__name__}]> {log}")
+
+    @classmethod
     def run_loop(cls):
         if cls.window is None:
             cls.init()

@@ -1,17 +1,20 @@
 import PySimpleGUI as sg
+
 from time import sleep
 from queue import Queue
 from pathlib import Path
 from pyperclip import paste
 from threading import Thread
 from playsound import playsound
-from .abstract_window import Window
-from .helper import copier, FONT
-from .details_view import DetailWindow
 
-B = lambda title, key, **kwargs: sg.Button(title, font=FONT, k=key, size=(5, 1), enable_events=True, **kwargs)
+from .abstract_window import Window
+from .details_view import DetailWindow
+from .helper import copier, FONT, get_resource
+
+background_color = sg.theme_background_color()
+
 B_mode = lambda title, key: sg.Button(title, k=key, font=FONT, enable_events=True, size=(18, 1))
-B_digi = lambda title, key: sg.Button(title, k=key, font=('IBM 3270', 20), enable_events=True, button_color=('white', sg.theme_background_color()), border_width=0, disabled_button_color='#b2b4b6')
+Image_B = lambda key, filename, **kwargs: sg.Button('', pad=(0,0), mouseover_colors='#a6a6b9', k=key, image_filename=get_resource(filename), button_color='#a6a6b9', enable_events=True, **kwargs)
 
 
 class HomeWindow(Window):
@@ -23,10 +26,8 @@ class HomeWindow(Window):
     music = Path(__file__).parent.parent / 'resources' / 'musics' / 'ding2.mp3'
 
     layout_home = [
-        [B('Start', '-START-'), B('Reset', '-RESET-', disabled=True, disabled_button_color='#b2b4b6'), B('Quit', '-QUIT-')],
-        [sg.HorizontalSeparator(),
-        sg.Frame('', [[B_digi('0', '-TENS-'), B_digi('0', '-BASICS-')]], border_width=0),
-        sg.HorizontalSeparator()]
+        [sg.T('0 0', font=('', 32), pad=(0,5), justification='right', k='-COUNTER-'), sg.Column([[sg.T(' ')], [sg.T('条已复制', font=('', 12), text_color='#d1cfa3')]], pad=(0,5)), sg.T(' ', size=(9,1)), sg.Column([[sg.B('', k='-DETAIL-', enable_events=True, image_filename=get_resource('detail.png'), button_color=background_color, image_subsample=2, mouseover_colors=background_color)], [sg.T(' ')]])],
+        [sg.Frame('', [[Image_B('-SET-', 'settings.png'), sg.T(' ', background_color='#a6a6b9'), sg.B('Start', k='-START-', size=(10, 1), font=('', 14), button_color=('white', '#464d64'), mouseover_colors=('white', '#575d70'), focus=True), sg.T(' ', background_color='#a6a6b9'), Image_B('-RESET-', 'reset.png', disabled=True)]], background_color='#a6a6b9')]
     ]
 
     layout_mode = [
@@ -43,17 +44,19 @@ class HomeWindow(Window):
 
     @classmethod
     def init(cls):
-        x = (sg.Window.get_screen_size()[0] - 229) // 2
+        cls.report('Initializing home window')
+        x = (sg.Window.get_screen_size()[0] - 264) // 2
         cls.window = sg.Window('连续复制', layout=cls.layout, location=(x, 0), keep_on_top=True, finalize=True)
-        cls.window['-TENS-'].Widget.config(takefocus=0)
-        cls.window['-BASICS-'].Widget.config(takefocus=0)
+        cls.window['-SET-'].Widget.config(takefocus=0)
+        cls.window['-RESET-'].Widget.config(takefocus=0)
+        cls.window['-DETAIL-'].Widget.config(takefocus=0)
 
     @classmethod
     def start_listener(cls):
         cls.listening = True
 
         def wrapper_listener():
-            print('Start listening...')
+            cls.report('Start listening...')
             original_text = paste()
             while cls.listening:
                 current_text = paste()
@@ -62,24 +65,24 @@ class HomeWindow(Window):
                     cls.music_queue.put('play')
                     original_text = current_text
                 sleep(0.01)
-            print('Quitting...')
+            cls.report('Quitting...')
 
         def wrapper_music():
-            print('Start music...')
+            cls.report('Start music...')
             while True:
                 sig = cls.music_queue.get()
                 if sig == 'quit':
                     break
                 elif sig == 'play':
-                    print('playing')
+                    cls.report('playing')
                     playsound(cls.music)
-            print('Quit music...')
+            cls.report('Quit music...')
 
         cls.listener_thread = Thread(target=wrapper_listener, name='Copy_Listener')
         cls.music_thread = Thread(target=wrapper_music, name='Music_Player')
         cls.listener_thread.start()
         cls.music_thread.start()
-# 《赵进喜三阴三阳〈伤寒论〉讲稿》
+# 《赵进喜三阴三阳〈伤寒论〉讲稿》墙裂推荐
     @classmethod
     def quit_listener(cls):
         if cls.listening:
@@ -92,8 +95,7 @@ class HomeWindow(Window):
     def update_digital(cls):
         tens = cls.count // 10
         basics = cls.count - tens * 10
-        cls.window['-TENS-'].update(str(tens))
-        cls.window['-BASICS-'].update(str(basics))
+        cls.window['-COUNTER-'].update(f'{tens} {basics}')
 
     @classmethod
     def run_loop(cls):
@@ -112,7 +114,7 @@ class HomeWindow(Window):
                 break
 
             if e == '*NEW_CONTENT*':
-                print(v[e])
+                cls.report(v[e])
                 copier.append(v['*NEW_CONTENT*'])
                 cls.count += 1
                 if cls.count > 99:
@@ -128,8 +130,7 @@ class HomeWindow(Window):
                     started = False
                     window['-START-'].update('Start')
                     window['-RESET-'].update(disabled=True)
-                    window['-TENS-'].update('0')
-                    window['-BASICS-'].update('0')
+                    window['-COUNTER-'].update('0 0')
                     cls.quit_listener()
 
                     if e == '-START-':
@@ -138,7 +139,7 @@ class HomeWindow(Window):
                             continue
                         window['-HOME-'].update(visible=False)
                         window['-MODE-'].update(visible=True)
-                        print(copier)
+                        cls.report(copier)
                     else:
                         copier.clear()
                 else:
@@ -147,8 +148,7 @@ class HomeWindow(Window):
                     window['-RESET-'].update(disabled=False)
                     cls.start_listener()
 
-            elif e in ('-TENS-', '-BASICS-'):
-                # print(window.size)
+            elif e == '-DETAIL-':
                 window.hide()
                 DetailWindow.run_loop()
                 DetailWindow.close()
@@ -161,9 +161,6 @@ class HomeWindow(Window):
 
     @classmethod
     def close(cls):
-        print('home quit')
-        DetailWindow.close()
-        print('detail quit')
-        cls.listener_thread = None
-        cls.layout_home = cls.layout_mode = None
+        cls.layout_home = cls.layout_mode = cls.listener_thread = None
         super().close()
+        cls.report('home quit')

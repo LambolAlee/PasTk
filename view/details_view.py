@@ -36,7 +36,7 @@ class DetailWindow(Window):
         cls.window['-D_LEAVE-'].Widget.configure(takefocus=0)
 
     @classmethod
-    def _update_list(cls, event):
+    def update_list(cls, event):
         window = cls.window
 
         txt = window['-TXT-'].get()

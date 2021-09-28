@@ -22,7 +22,7 @@ class SelectionWindow(Window):
         cls.service_thread.start()
 
     @classmethod
-    def _update_list(cls, value):
+    def update_list(cls, value):
         copier.remove(value)
         if copier == []:
             cls.over = True
