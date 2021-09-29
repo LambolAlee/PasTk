@@ -1,9 +1,11 @@
 import PySimpleGUI as sg
 from .abstract_window import Window
-from .helper import copier, get_resource
+from .helpers.helper import copier, get_resource
+
+background_color = sg.theme_background_color()
 
 prompt = '$> 请向文本框中添加内容...'
-Image_B = lambda key, filename: sg.Button('', image_subsample=20, pad=(0,0), mouseover_colors=sg.theme_background_color(), k=key, image_filename=get_resource(filename), button_color=sg.theme_background_color(), enable_events=True)
+Image_B = lambda key, filename: sg.Button('', image_subsample=20, pad=(0,3), mouseover_colors=background_color, k=key, image_filename=get_resource(filename), button_color=background_color, enable_events=True)
 
 
 class DetailWindow(Window):
@@ -20,7 +22,9 @@ class DetailWindow(Window):
 
             sg.Column([
                 [sg.Multiline(background_color='#B2D5C0', pad=(0,0), default_text='Hello World', font=('', 16), k='-TXT-', size=(40, 16), no_scrollbar=True, enable_events=True)],
-                [sg.T('Enter to a newline', text_color='#E6E6FA', font=('', 12)), sg.T(' '), sg.T('Ctrl-Enter to submit the text', text_color='#E6E6FA', font=('', 12))],
+                [sg.T('Enter to a newline', text_color='#E6E6FA', font=('', 12)), sg.T(' '), 
+                sg.T('Ctrl-Enter to submit the text', text_color='#E6E6FA', font=('', 12)), 
+                sg.T(' ', size=(4,1)), sg.B('', image_filename=get_resource('squarecheck.png'), button_color=background_color, mouseover_colors=background_color, pad=(0,0), k='-SUBMIT-', enable_events=True)],
             ], expand_y=True)]])
         ]]
         return cls.layout
@@ -28,7 +32,7 @@ class DetailWindow(Window):
     @classmethod
     def init(cls):
         cls.window = sg.Window('库存详情', layout=cls.build(), finalize=True)
-        cls.window['-TXT-'].Widget.bind('<Control Return>', cls._update_list)
+        cls.window['-TXT-'].Widget.bind('<Control Return>', cls.update_list)
         cls.window['-TXT-'].bind('<Key-BackSpace>', '*BACK*')
         cls.window['-TXT-'].set_focus(True)
         cls.window['-D_ADD-'].Widget.configure(takefocus=0)
@@ -99,6 +103,9 @@ class DetailWindow(Window):
                     window.write_event_value('-DETAIL_LIST-', [copier[0]])
                 else:
                     window['-TXT-'].update('')
+                
+            elif e == '-SUBMIT-':
+                cls.update_list((e, v))
 
             elif e.startswith('-TXT-') and v['-TXT-'].rstrip('\n'):
                 value = v['-TXT-'].rstrip('\n')

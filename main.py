@@ -1,8 +1,8 @@
 import sys
 import PySimpleGUI as sg
 
-from view import handlers, set_input_pos, get_icon
-from view import run_HomeWindow
+from pastk import run_HomeWindow
+from pastk import handlers, set_input_pos, get_icon
 
 
 def main():

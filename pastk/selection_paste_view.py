@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 from queue import Queue
 from pyperclip import copy
 from .abstract_window import Window
-from .helper import copier, FONT, auto_paste_servive
+from .helpers.helper import copier, FONT, auto_paste_servive
 
 
 class SelectionWindow(Window):

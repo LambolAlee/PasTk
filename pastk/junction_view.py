@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 from pyperclip import copy
-from .helper import copier, FONT, auto_paste, notify
+from .helpers.helper import copier, FONT, auto_paste, notify
 
 
 def merge():

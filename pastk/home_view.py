@@ -2,14 +2,15 @@ import PySimpleGUI as sg
 
 from time import sleep
 from queue import Queue
-from pathlib import Path
 from pyperclip import paste
 from threading import Thread
 from playsound import playsound
 
+from .config_view import configure
 from .abstract_window import Window
 from .details_view import DetailWindow
-from .helper import copier, FONT, get_resource
+from .config_view import ConfigWindow
+from .helpers.helper import copier, FONT, get_resource, root
 
 background_color = sg.theme_background_color()
 
@@ -23,7 +24,6 @@ class HomeWindow(Window):
     listener_thread = None
     music_thread = None
     music_queue = Queue()
-    music = Path(__file__).parent.parent / 'resources' / 'musics' / 'ding2.mp3'
 
     layout_home = [
         [sg.T('0 0', font=('', 32), pad=(0,5), justification='right', k='-COUNTER-'), sg.Column([[sg.T(' ')], [sg.T('条已复制', font=('', 12), text_color='#d1cfa3')]], pad=(0,5)), sg.T(' ', size=(9,1)), sg.Column([[sg.B('', k='-DETAIL-', enable_events=True, image_filename=get_resource('detail.png'), button_color=background_color, image_subsample=2, mouseover_colors=background_color)], [sg.T(' ')]])],
@@ -62,7 +62,8 @@ class HomeWindow(Window):
                 current_text = paste()
                 if original_text != current_text and current_text is not None:
                     cls.window.write_event_value('*NEW_CONTENT*', current_text)
-                    cls.music_queue.put('play')
+                    if configure['music'].music_enabled:
+                        cls.music_queue.put('play')
                     original_text = current_text
                 sleep(0.01)
             cls.report('Quitting...')
@@ -75,7 +76,7 @@ class HomeWindow(Window):
                     break
                 elif sig == 'play':
                     cls.report('playing')
-                    playsound(cls.music)
+                    playsound(configure['music'].music_path)
             cls.report('Quit music...')
 
         cls.listener_thread = Thread(target=wrapper_listener, name='Copy_Listener')
@@ -155,6 +156,13 @@ class HomeWindow(Window):
                 cls.count = len(copier)
                 cls.update_digital()
                 window.un_hide()
+            
+            elif e == '-SET-':
+                if started:
+                    sg.popup_auto_close('请先终止复制再修改配置！', title='连续复制', font=FONT, auto_close_duration=1)
+                    continue
+                ConfigWindow.run_loop()
+                ConfigWindow.close()
 
             if e in ('-HE_BING-', '-FEN_DUAN-', '-LIAN_XU-', '-XUAN_ZE-'):
                 return e
