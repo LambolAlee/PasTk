@@ -50,7 +50,7 @@ class SelectionWindow(Window):
                 copy(value)
                 window.hide()
                 cls.queue.put('execute')
-                cls._update_list(value)
+                cls.update_list(value)
 
             elif e == '*EXECUTED*':
                 window.un_hide()

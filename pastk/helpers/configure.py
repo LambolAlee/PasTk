@@ -1,4 +1,5 @@
 import sys
+from typing import Dict
 import PySimpleGUI as sg
 
 from pathlib import Path
@@ -6,15 +7,16 @@ from json import dump, load
 from json.decoder import JSONDecodeError
 from .settings import template
 from collections import UserDict
-from .helper import resources, get_musics, root, music_dir
+from .helper import get_musics, root, music_dir
 
 
 class Music:
+    """Stands for the music part in the settings.json"""
     _music_path = None
     _music_selected = ""
     _music_enabled = False
 
-    def __init__(self, data):
+    def __init__(self, data: Dict):
         self.data = data
         self.musics = get_musics()
         self.init()
@@ -28,7 +30,11 @@ class Music:
         return self._music_enabled
 
     @music_enabled.setter
-    def music_enabled(self, value):
+    def music_enabled(self, value: bool):
+        """
+        Even if the value of the key `enabled` is true in the settings.json, the property music_enabled
+        will be set to false if the rules below are not met
+        """
         if value:
             value = bool(self.musics and self.music_selected)
         self._music_enabled = value
@@ -51,7 +57,7 @@ class Music:
     def refresh_musics(self):
         self.musics = get_musics()
 
-    def update(self, music_name):
+    def update(self, music_name: str):
         self.music_selected = music_name
 
     def rollback(self):
@@ -66,6 +72,14 @@ class Music:
 
 
 class Configure(UserDict):
+    """
+    Configure manager
+
+    Each key in the settings.json is written in the `data` attribute, so can call
+    each part by using dict syntex
+
+    And the real data is stored in the `raw_data` attribute
+    """
     def __init__(self):
         super().__init__(None)
         self.path = root / 'settings.json'
@@ -73,7 +87,7 @@ class Configure(UserDict):
         self['music'] = Music(self.raw_data['music'])
 
     @staticmethod
-    def _save(path, data):
+    def _save(path, data: Dict):
         with open(path, 'w', encoding='utf-8') as f:
             dump(data, f, indent=4)
 
@@ -98,5 +112,5 @@ class Configure(UserDict):
     def rollback(self):
         self['music'].rollback()
 
-
+# Outer class can use the instance directly rather than initializing one themselves
 configure = Configure()

@@ -1,3 +1,6 @@
+"""
+Settings Json Template
+"""
 template = {
     "music": {
         "enabled": False,
