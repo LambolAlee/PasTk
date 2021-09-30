@@ -40,7 +40,8 @@ jobs:
       run: |
         cp LICENSE dist/
         cp *md dist/
-    - name: actions/upload-artifact@v2
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
         name: ${{github.event.repository.name}}-${{runner.os}}
         path: ${{github.workspace}}/dist/
