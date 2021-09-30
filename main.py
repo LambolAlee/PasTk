@@ -11,6 +11,7 @@ def main():
     if handle_type is None:
         sys.exit(1)
     set_input_pos()
+    # handlers handle the different type of pasting
     handlers[handle_type]()
 
 
