@@ -36,11 +36,12 @@ jobs:
     - name: Package using pyinstaller
       id: package
       run: |
-        pyinstaller main.py -n ${{github.event.repository.name}} -w --clean --add-data=".\settings.json;." --add-data=".\resources;."
+        pyinstaller main.py -n ${{github.event.repository.name}} -w --clean --add-data=".\settings.json;."
     - name: Copy necessary files to the dist directory
       run: |
         cp LICENSE dist/
         cp *md dist/
+        cp -r resources/ dist/
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
