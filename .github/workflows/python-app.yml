@@ -34,6 +34,7 @@ jobs:
         pip install flake8 pyinstaller
         pip install -r requirements.txt
     - name: Package using pyinstaller
+      id: package
       run: |
         pyinstaller main.py -n ${{github.event.repository.name}} -w --clean --add-data=".\settings.json;." --add-data=".\resources;."
     - name: Copy necessary files to the dist directory
