@@ -18,6 +18,8 @@ class Window:
     def run_loop(cls):
         if cls.window is None:
             cls.init()
+        else:
+            cls.window.un_hide()
 
     @classmethod
     def close(cls):
@@ -28,3 +30,4 @@ class Window:
         cls.layout = None
         cls.window = None
         gc.collect()
+        cls.report('closed')

@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 from queue import Queue
 from pyperclip import copy
 from .abstract_window import Window
-from .helpers.helper import copier, FONT, auto_paste_servive
+from .helpers.helper import copier, auto_paste_servive
 
 
 class SelectionWindow(Window):
@@ -12,7 +12,7 @@ class SelectionWindow(Window):
     service_thread = None
     layout = [
         [sg.Listbox(copier, select_mode="LISTBOX_SELECT_MODE_SINGLE", size=(28, 10), no_scrollbar=True, font=('', 16), k='-S_LIST-', enable_events=True)],
-        [sg.B('不贴了，退出', size=(30, 1), k='-S_QUIT-', enable_events=True, font=FONT)]
+        [sg.B('不贴了，退出', size=(30, 1), k='-S_QUIT-', enable_events=True)]
     ]
 
     @classmethod

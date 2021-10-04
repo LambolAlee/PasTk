@@ -77,6 +77,7 @@ class DetailWindow(Window):
                 try:
                     copier.remove(prompt)
                 finally:
+                    window.hide()
                     break
 
             if e == '-DETAIL_LIST-':

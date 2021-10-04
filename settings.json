@@ -1,6 +1,7 @@
 {
+    "one_piece": false,
     "music": {
         "enabled": true,
-        "music_selected": "ding2.mp3"
+        "music_selected": "bottle.mp3"
     }
 }

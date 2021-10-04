@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 from pyperclip import copy
 from queue import Queue
-from .helpers.helper import copier, FONT, auto_paste_servive
+from .helpers.helper import copier, auto_paste_servive
 from .abstract_window import Window
 
 
@@ -12,7 +12,7 @@ class ContinueWindow(Window):
     layout = [
         [sg.Frame('', [
             [sg.B('Hello World', font=('', 16), size=(20, 2), enable_events=True, k='-C_PASTE-')],
-            [sg.B('不贴了，退出', font=FONT, size=(26, 1), enable_events=True, k='-C_QUIT-')]
+            [sg.B('不贴了，退出', size=(26, 1), enable_events=True, k='-C_QUIT-')]
         ], element_justification='center')]
     ]
 

@@ -2,27 +2,34 @@ import PySimpleGUI as sg
 
 from .abstract_window import Window
 from .helpers.configure import configure
-from .helpers.helper import FONT, music_dir
+from .helpers.helper import music_dir
 
 FONT2 = ('', 16)
 
 class ConfigWindow(Window):
-    modified = False
+    music = configure['music']
 
     @classmethod
     def init(cls):
         cls.window = sg.Window('连续复制-设置', layout=cls.build(), enable_close_attempted_event=True, finalize=True)
-        if configure['music'].music_selected:
-            cls.window['-MUSIC_SELECT-'].update(value=configure['music'].music_selected)
-        cls.window['-MUSIC_SELECT-'].update(disabled=not configure['music'].music_enabled)
+        if cls.music.music_enabled:
+            if not cls.music.check_availability():
+                sg.popup_error(f"所选音乐{cls.music.music_selected}不可用，已禁用", "如有需要，请检查音乐文件夹并手动开启音乐！", title='连续复制-设置')
+                cls.music.music_enabled = False
+                configure.save()
+            else:
+                cls.window['-MUSIC_SELECT-'].update(value=cls.music.music_selected)
+        cls.window['-MUSIC_SELECT-'].update(disabled=not cls.music.music_enabled)
+        cls.window['-CHECK-'].update(cls.music.music_enabled)
 
     @classmethod
     def build(cls):
         settings_tab = [
             [sg.T('Music: ', font=FONT2), 
-            sg.Combo(configure['music'].musics, size=(10,1), readonly=True, font=FONT2, enable_events=True, k='-MUSIC_SELECT-'), 
-            sg.Button('open', font=FONT2, k='-OPEN-', enable_events=True), sg.Checkbox('', default=configure['music'].music_enabled, k='-CHECK-', enable_events=True)],
-            [sg.B('Save', font=FONT, disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=FONT, k='-QUIT-', enable_events=True)]
+            sg.Combo(cls.music.musics, size=(10,1), readonly=True, font=FONT2, enable_events=True, k='-MUSIC_SELECT-'), 
+            sg.Button('open', font=('', 12), k='-OPEN-', enable_events=True), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True)],
+            [sg.T(' ')], 
+            [sg.B('Save', font=('', 12), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=('', 12), k='-QUIT-', enable_events=True)]
         ]
 
         about_tab = [
@@ -31,14 +38,20 @@ class ConfigWindow(Window):
         ]
 
         cls.layout = [
-            [sg.TabGroup([[sg.Tab('Settings', settings_tab), sg.Tab('About', about_tab, font=FONT)]])]
+            [sg.TabGroup([[sg.Tab('Settings', settings_tab), sg.Tab('About', about_tab)]], font=('', 12))]
         ]
         return cls.layout
 
     @classmethod
-    def update_state(cls, comp, raw):
-        cls.modified = True if comp != raw else False
-        cls.window['-SAVE-'].update(disabled=not cls.modified)
+    def update_state(cls, state):
+        cls.window['-SAVE-'].update(disabled=not cls.music.is_modified())
+        cls.window['-MUSIC_SELECT-'].update(disabled=not state, readonly=False, value=cls.music.music_selected)
+        cls.window['-MUSIC_SELECT-'].update(readonly=True)
+
+    @classmethod
+    def set_default_music(cls):
+        cls.music.set_default_music()
+        cls.window['-MUSIC_SELECT-'].update(values=cls.music.musics)
 
     @classmethod
     def run_loop(cls):
@@ -51,45 +64,43 @@ class ConfigWindow(Window):
             e, v = window.read()
 
             if e in (sg.WINDOW_CLOSE_ATTEMPTED_EVENT, '-QUIT-'):
-                if cls.modified:
-                    res = sg.popup_yes_no('是否保存修改', title='连续复制-设置', font=FONT, keep_on_top=True)
+                if cls.music.is_modified():
+                    res = sg.popup_yes_no('是否保存修改', title='连续复制-设置', keep_on_top=True)
                     if res is None:
                         continue
                     elif res == 'Yes':
                         configure.save()
                     else:
                         configure.rollback()
+                window.hide()
                 break
 
             if e == '-MUSIC_SELECT-':
-                if v[e] != configure['music'].music_selected:
-                    configure['music'].music_selected = v[e]
-                    cls.update_state(v[e], configure['music'].data['music_selected'])
+                if v[e] != cls.music.music_selected:
+                    cls.music.music_selected = v[e]
+                    cls.window['-SAVE-'].update(disabled=not cls.music.is_modified())
 
             elif e == '-SAVE-':
                 configure.save()
-                cls.modified = False
                 cls.window['-SAVE-'].update(disabled=True)
 
             elif e == '-CHECK-':
-                configure['music'].music_enabled = v[e]
-                if v[e] and not configure['music'].music_enabled:
-                    if configure['music'].musics:
-                        configure['music'].music_selected = configure['music'].musics[0]
-                        configure['music'].music_enabled = True
-                        window['-MUSIC_SELECT-'].update(values=configure['music'].musics)
+                cls.music.music_enabled = v[e]
+                if v[e]:
+                    if cls.music.check_has_musics_with_refresh():
+                        if not cls.music.check_music_selected():
+                            cls.set_default_music()
                     else:
-                        sg.popup_ok('没有在音乐文件夹下找到合适的音乐文件，请放入音乐后再尝试开启此选项', title='连续复制-告示', font=FONT)
+                        sg.popup_ok('没有在音乐文件夹下找到合适的音乐文件，请放入音乐后再尝试开启此选项', title='连续复制-告示')
                         window['-CHECK-'].update(False)
+                        cls.music.music_enabled = False
                         continue
-                cls.update_state(v[e], configure['music'].data['enabled'])
-                window['-MUSIC_SELECT-'].update(disabled=not v[e], readonly=False, value=configure['music'].music_selected)
-                window['-MUSIC_SELECT-'].update(readonly=True)
-            
+                cls.update_state(v[e])
+
             elif e == '-OPEN-':
                 try:
                     from os import startfile
-                    startfile(music_dir)
+                    startfile(cls.music_dir)
                 except ImportError:
                     from subprocess import call
                     call(['open', music_dir])

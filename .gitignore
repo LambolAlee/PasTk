@@ -130,3 +130,7 @@ dmypy.json
 
 # Mac file
 .DS_Store
+
+# logo design file
+logo_design/
+resources/logo/icons.iconset/

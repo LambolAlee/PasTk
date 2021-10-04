@@ -1,8 +1,9 @@
 from .home_view import HomeWindow
-from .continuous_paste_view import ContinueWindow
 from .selection_paste_view import SelectionWindow
-from .junction_view import merge, subsection
-from .helpers.helper import get_callable, FONT, set_input_pos, get_icon
+from .continuous_paste_view import ContinueWindow
+from .junction_view import subsection, merge
+from .helpers.configure import configure
+from .helpers.helper import get_callable, get_icon, set_input_pos
 
 run_HomeWindow = get_callable(HomeWindow)
 
@@ -13,4 +14,4 @@ handlers = {
     '-XUAN_ZE-': get_callable(SelectionWindow)
 }
 
-__all__ = ("handlers", "run_HomeWindow", "FONT", "set_input_pos", "get_icon")
+__all__ = ("run_HomeWindow", "get_icon", "handlers", "configure", "set_input_pos")
