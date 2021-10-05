@@ -8,14 +8,14 @@ from playsound import playsound
 
 from .config_view import configure
 from .abstract_window import Window
-from .details_view import DetailWindow
 from .config_view import ConfigWindow
+from .details_view import DetailWindow
 from .helpers.helper import copier, get_resource
 
 background_color = sg.theme_background_color()
 
 B_mode = lambda title, key: sg.Button(title, k=key, enable_events=True, size=(18, 1))
-Image_B = lambda key, filename, **kwargs: sg.Button('', pad=(0,0), mouseover_colors='#a6a6b9', k=key, image_filename=get_resource(filename), button_color='#a6a6b9', enable_events=True, **kwargs)
+Image_B = lambda key, filename, **kwargs: sg.Button('', pad=(0,0), mouseover_colors='#a6a6b9', k=key, image_filename=get_resource(filename), button_color='#a6a6b9', enable_events=True, border_width=0, **kwargs)
 
 
 class HomeWindow(Window):
@@ -38,7 +38,7 @@ class HomeWindow(Window):
     @classmethod
     def build(cls):
         layout_home = [
-            [sg.T('0 0', font=('', 32), pad=(0,5), justification='right', k='-COUNTER-'), sg.Column([[sg.T(' ')], [sg.T('条已复制', font=('', 12), text_color='#d1cfa3')]], pad=(0,5)), sg.T(' ', size=(6,1)), sg.Column([[sg.B('', k='-DETAIL-', enable_events=True, image_filename=get_resource('detail.png'), button_color=background_color, image_subsample=2, mouseover_colors=background_color)], [sg.T(' ')]])],
+            [sg.T('0 0', font=('PingFang', 32), pad=(0,5), justification='right', k='-COUNTER-'), sg.Column([[sg.T(' ')], [sg.T('条已复制', font=('PingFang', 12), text_color='#d1cfa3')]], pad=(0,5)), sg.T(' ', size=(6,1)), sg.Column([[sg.B('', k='-DETAIL-', enable_events=True, image_filename=get_resource('detail.png'), button_color=background_color, image_subsample=2, mouseover_colors=background_color)], [sg.T(' ')]])],
             [sg.Frame('', [[Image_B('-SET-', 'settings.png'), sg.T(' ', background_color='#a6a6b9'), sg.B('Start', k='-START-', size=(10, 1), button_color=('white', '#464d64'), mouseover_colors=('white', '#575d70'), focus=True), sg.T(' ', background_color='#a6a6b9'), Image_B('-RESET-', 'reset.png', disabled=True)]], background_color='#a6a6b9')]
         ]
 
@@ -127,6 +127,7 @@ class HomeWindow(Window):
         super().run_loop()
 
         cls.count = 0
+        copier.clear()
         window: sg.Window = cls.window
         started = False
 
@@ -139,7 +140,6 @@ class HomeWindow(Window):
                     cls.quit_listener()
                 return status_code
             elif status_code == 2:
-                # copier.clear()
                 cls.toggle_frame()
                 continue
 
@@ -156,11 +156,9 @@ class HomeWindow(Window):
 
             elif e in ('-START-', '-RESET-'):
                 if started:
-                    # cls.count = 0
                     started = False
                     window['-START-'].update('Start')
                     window['-RESET-'].update(disabled=True)
-                    # window['-COUNTER-'].update('0 0')
                     cls.quit_listener()
 
                     if e == '-START-':

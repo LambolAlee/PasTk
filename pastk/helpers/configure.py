@@ -6,6 +6,7 @@ from pathlib import Path
 from json import dump, load
 from collections import UserDict
 from json.decoder import JSONDecodeError
+
 from .helper import root
 from .settings import template
 from .music_manager import Music
@@ -45,6 +46,12 @@ class Configure(UserDict):
         else:
             Configure._save(path, template)
         return data
+
+    def is_modified(self, key: str):
+        try:
+            return self[key].is_modified()
+        except AttributeError:
+            return self[key] != self.raw_data[key]
 
     def save(self):
         self.raw_data.update({

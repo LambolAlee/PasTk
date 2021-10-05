@@ -1,9 +1,9 @@
 import pyautogui as auto
 import PySimpleGUI as sg
 
-from functools import wraps
 from time import sleep
 from queue import Queue
+from functools import wraps
 from threading import Thread
 from .system_manager import platform
 
@@ -26,7 +26,7 @@ class AutoPasteManager:
     
     @staticmethod
     def paste():
-        sleep(.8)
+        sleep(1)
         auto.hotkey(*platform.switch_app_keys, interval=.01)
         auto.hotkey(*platform.paste_keys, interval=.01)
     

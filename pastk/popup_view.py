@@ -1,8 +1,8 @@
 import PySimpleGUI as sg
 
 from pyperclip import copy
-from .abstract_window import Window
 from .helpers.helper import copier
+from .abstract_window import Window
 from .helpers.auto_paste_service import AutoPasteManager as apm
 
 
@@ -22,7 +22,7 @@ class PopupMergeWindow(Window):
     def build(cls):
         cls.layout = [
             [sg.T('请输入连接符')], [sg.Input(size=(20, 1))], 
-            [sg.Ok(font=('', 12)), sg.Cancel(font=('', 12))]
+            [sg.Ok(font=('PingFang', 12)), sg.Cancel(font=('PingFang', 12))]
         ]
         return cls.layout
 
@@ -59,3 +59,4 @@ class SetInputPos(Window):
     def run_loop(cls):
         super().run_loop()
         cls.window.read()
+        cls.window.hide()

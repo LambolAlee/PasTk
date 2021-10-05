@@ -1,8 +1,8 @@
 import PySimpleGUI as sg
-from queue import Queue
+
 from pyperclip import copy
-from .abstract_window import Window
 from .helpers.helper import copier
+from .abstract_window import Window
 from .helpers.auto_paste_service import AutoPasteManager as apm
 
 
@@ -16,7 +16,7 @@ class SelectionWindow(Window):
     @classmethod
     def build(cls):
         cls.layout = [
-            [sg.Listbox(copier, select_mode="LISTBOX_SELECT_MODE_SINGLE", size=(28, 10), no_scrollbar=True, font=('', 16), k='-S_LIST-', enable_events=True)],
+            [sg.Listbox(copier, select_mode="LISTBOX_SELECT_MODE_SINGLE", size=(28, 10), no_scrollbar=True, font=('PingFang', 16), k='-S_LIST-', enable_events=True)],
             [sg.B('不贴了，退出', size=(30, 1), k='-S_QUIT-', enable_events=True)]
         ]
         return cls.layout
@@ -50,3 +50,5 @@ class SelectionWindow(Window):
 
             elif e == '*EXECUTED*':
                 window.un_hide()
+
+        cls.over = False

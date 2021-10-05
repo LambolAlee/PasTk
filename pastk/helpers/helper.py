@@ -1,5 +1,6 @@
 import pyautogui as auto
 import PySimpleGUI as sg
+
 from time import sleep
 from queue import Queue
 from pathlib import Path

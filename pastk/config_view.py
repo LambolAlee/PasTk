@@ -1,10 +1,12 @@
 import PySimpleGUI as sg
 
 from .abstract_window import Window
-from .helpers.configure import configure
 from .helpers.helper import music_dir
+from .helpers.configure import configure
 
-FONT2 = ('', 16)
+FONT2 = ('PingFang', 16)
+
+on_off_state = {True: 'enabled', False: 'disabled'}
 
 class ConfigWindow(Window):
     music = configure['music']
@@ -25,25 +27,26 @@ class ConfigWindow(Window):
     @classmethod
     def build(cls):
         settings_tab = [
+            [sg.T('One Piece: ', font=FONT2), sg.Checkbox('enabled' if configure['one_piece'] else 'disabled', default=configure['one_piece'], k='-ONE-', enable_events=True)],
             [sg.T('Music: ', font=FONT2), 
             sg.Combo(cls.music.musics, size=(10,1), readonly=True, font=FONT2, enable_events=True, k='-MUSIC_SELECT-'), 
-            sg.Button('open', font=('', 12), k='-OPEN-', enable_events=True), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True)],
+            sg.Button('open', font=('PingFang', 12), k='-OPEN-', enable_events=True), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True)],
             [sg.T(' ')], 
-            [sg.B('Save', font=('', 12), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=('', 12), k='-QUIT-', enable_events=True)]
+            [sg.B('Save', font=('PingFang', 12), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=('PingFang', 12), k='-QUIT-', enable_events=True)]
         ]
 
         about_tab = [
-            [sg.T('PasTk', font=('', 32), text_color='white')],
-            [sg.T('Written in python using PySimpleGUI', font=('', 14))]
+            [sg.T('PasTk', font=('PingFang', 32), text_color='white')],
+            [sg.T('Written in python using PySimpleGUI')]
         ]
 
         cls.layout = [
-            [sg.TabGroup([[sg.Tab('Settings', settings_tab), sg.Tab('About', about_tab)]], font=('', 12))]
+            [sg.TabGroup([[sg.Tab('Settings', settings_tab), sg.Tab('About', about_tab)]], font=('PingFang', 12))]
         ]
         return cls.layout
 
     @classmethod
-    def update_state(cls, state):
+    def update_music_state(cls, state):
         cls.window['-SAVE-'].update(disabled=not cls.music.is_modified())
         cls.window['-MUSIC_SELECT-'].update(disabled=not state, readonly=False, value=cls.music.music_selected)
         cls.window['-MUSIC_SELECT-'].update(readonly=True)
@@ -84,6 +87,11 @@ class ConfigWindow(Window):
                 configure.save()
                 cls.window['-SAVE-'].update(disabled=True)
 
+            elif e == '-ONE-':
+                configure['one_piece'] = v[e]
+                window['-SAVE-'].update(disabled=not configure.is_modified('one_piece'))
+                window['-ONE-'].update(text=on_off_state[v[e]])
+
             elif e == '-CHECK-':
                 cls.music.music_enabled = v[e]
                 if v[e]:
@@ -95,7 +103,7 @@ class ConfigWindow(Window):
                         window['-CHECK-'].update(False)
                         cls.music.music_enabled = False
                         continue
-                cls.update_state(v[e])
+                cls.update_music_state(v[e])
 
             elif e == '-OPEN-':
                 try:

@@ -17,7 +17,7 @@ class ContinueWindow(Window):
     def build(cls):
         cls.layout = [
             [sg.Frame('', [
-                [sg.B('Hello World', font=('', 16), size=(20, 2), enable_events=True, k='-C_PASTE-')],
+                [sg.B('Hello World', font=('PingFang', 16), size=(20, 2), enable_events=True, k='-C_PASTE-')],
                 [sg.B('不贴了，退出', size=(26, 1), enable_events=True, k='-C_QUIT-')]
             ], element_justification='center')]
         ]
@@ -47,7 +47,8 @@ class ContinueWindow(Window):
                 break
 
             elif e == '-C_PASTE-':
-                if cls.over: break
+                if cls.over:
+                    break
                 window.hide()
                 cls.update_button_text()
                 copy(copier.pop(0))
@@ -55,3 +56,5 @@ class ContinueWindow(Window):
 
             elif e == '*EXECUTED*':
                 window.un_hide()
+
+        cls.over = False
