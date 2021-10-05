@@ -15,7 +15,8 @@ class Platform:
             self.switch_app_keys = ('command', 'tab')
             self.paste_keys = ('command', 'v')
         elif self.sys_name == 'Windows':
-            self.icon_suffix = '.ico'
+            # self.icon_suffix = '.ico'
+            pass
 
 
 platform = Platform()
