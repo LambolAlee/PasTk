@@ -31,7 +31,7 @@ class DetailWindow(Window):
 
     @classmethod
     def init(cls):
-        cls.window = sg.Window('库存详情', layout=cls.build(), finalize=True)
+        cls.window = sg.Window('库存详情', layout=cls.build(), enable_close_attempted_event=True, finalize=True)
         cls.window['-TXT-'].Widget.bind('<Control Return>', cls.update_list)
         cls.window['-TXT-'].bind('<Key-BackSpace>', '*BACK*')
         cls.window['-TXT-'].set_focus(True)
@@ -73,7 +73,7 @@ class DetailWindow(Window):
         while True:
             e, v = window.read()
 
-            if e in [sg.WINDOW_CLOSED, '-D_LEAVE-']:
+            if e in [sg.WINDOW_CLOSE_ATTEMPTED_EVENT, '-D_LEAVE-']:
                 try:
                     copier.remove(prompt)
                 finally:
