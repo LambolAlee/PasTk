@@ -36,7 +36,7 @@ jobs:
     - name: Package using pyinstaller
       id: package
       run: |
-        pyinstaller main.py -n ${{github.event.repository.name}} --clean --add-data="./settings.json;." -i resources/logo/PasTk_logo.icns
+        pyinstaller main.py -n ${{github.event.repository.name}} --clean --add-data="./settings.json:." -i resources/logo/PasTk_logo.icns
     - name: Copy necessary files to the dist directory
       run: |
         cp LICENSE dist/
