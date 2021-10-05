@@ -1,6 +1,6 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
+# build the app using pyinstaller for windows 64bit
 name: Python application on Windows
 
 on:
