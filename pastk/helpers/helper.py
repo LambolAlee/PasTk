@@ -65,8 +65,6 @@ def get_callable(class_: Window):
 
 def auto_paste():
     auto.hotkey(*platform.switch_app_keys, interval=.02)
-    auto.hotkey(*platform.switch_app_keys, interval=.02)
-    auto.hotkey(*platform.switch_app_keys, interval=.02)
     auto.hotkey(*platform.paste_keys, interval=.02)
 
 

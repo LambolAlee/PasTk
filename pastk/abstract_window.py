@@ -11,6 +11,10 @@ class Window:
         pass
 
     @classmethod
+    def build(cls):
+        return cls.layout
+
+    @classmethod
     def report(cls, log):
         print(f"[{cls.__name__}]> {log}")
 

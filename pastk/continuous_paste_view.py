@@ -1,33 +1,32 @@
 import PySimpleGUI as sg
 from pyperclip import copy
-from queue import Queue
-from .helpers.helper import copier, auto_paste_servive
+from .helpers.helper import copier
 from .abstract_window import Window
+from .helpers.auto_paste_service import AutoPasteManager as apm
 
 
 class ContinueWindow(Window):
     over = False
-    queue = Queue(3)
-    service_thread = None
-    layout = [
-        [sg.Frame('', [
-            [sg.B('Hello World', font=('', 16), size=(20, 2), enable_events=True, k='-C_PASTE-')],
-            [sg.B('不贴了，退出', size=(26, 1), enable_events=True, k='-C_QUIT-')]
-        ], element_justification='center')]
-    ]
 
     @classmethod
     def init(cls):
-        cls.window = sg.Window('连续粘贴模式', layout=cls.layout, keep_on_top=True, finalize=True)
+        cls.window = sg.Window('连续粘贴模式', layout=cls.build(), keep_on_top=True, finalize=True)
         cls.update_button_text()
-        cls.service_thread = auto_paste_servive(cls.window, cls.queue)
-        cls.service_thread.start()
+
+    @classmethod
+    def build(cls):
+        cls.layout = [
+            [sg.Frame('', [
+                [sg.B('Hello World', font=('', 16), size=(20, 2), enable_events=True, k='-C_PASTE-')],
+                [sg.B('不贴了，退出', size=(26, 1), enable_events=True, k='-C_QUIT-')]
+            ], element_justification='center')]
+        ]
+        return cls.layout
 
     @classmethod
     def update_button_text(cls):
-        try:
-            text = copier[0]
-        except IndexError:
+        text = copier[0]
+        if len(copier) == 1:
             text = '已全部贴完！'
             cls.over = True
         else:
@@ -45,18 +44,14 @@ class ContinueWindow(Window):
             e, _ = window.read()
 
             if e in (sg.WINDOW_CLOSED, '-C_QUIT-'):
-                cls.queue.put('q')
-                cls.service_thread.join()
                 break
 
             elif e == '-C_PASTE-':
-                if cls.over:
-                    cls.window['-C_QUIT-'].click()
-                    continue
-                copy(copier.pop(0))
+                if cls.over: break
                 window.hide()
-                cls.queue.put('execute')
                 cls.update_button_text()
+                copy(copier.pop(0))
+                apm.order(window)
 
             elif e == '*EXECUTED*':
                 window.un_hide()

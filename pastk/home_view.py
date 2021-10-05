@@ -169,8 +169,10 @@ class HomeWindow(Window):
                             continue
                         cls.toggle_frame()
                         cls.report(copier)
-                    # else:
-                    #     copier.clear()
+                    else:
+                        cls.count = 0
+                        copier.clear()
+                        window['-COUNTER-'].update('0 0')
                 else:
                     started = True
                     window['-START-'].update('Over')
