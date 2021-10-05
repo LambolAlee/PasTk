@@ -1,3 +1,9 @@
+"""
+home_view.py
+
+this file is the main page of the whole app
+"""
+
 import PySimpleGUI as sg
 
 from time import sleep
