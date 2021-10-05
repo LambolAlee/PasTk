@@ -1,10 +1,6 @@
-import pyautogui as auto
 import PySimpleGUI as sg
 
-from time import sleep
-from queue import Queue
 from pathlib import Path
-from threading import Thread
 from ..abstract_window import Window
 from .system_manager import platform
 
@@ -62,24 +58,3 @@ def get_callable(class_: Window):
         class_.close()
         return ret
     return wrapper
-
-
-def auto_paste():
-    auto.hotkey(*platform.switch_app_keys, interval=.02)
-    auto.hotkey(*platform.paste_keys, interval=.02)
-
-
-def auto_paste_servive(window: sg.Window, queue: Queue):
-    def service():
-        print('*[auto paste]* start listening...')
-        while True:
-            sig = queue.get()
-            if sig == 'quit':
-                print('*[auto paste]* quitting...')
-                return
-            else:
-                print('*[auto paste]* pasting...')
-                auto_paste()
-                sleep(.5)
-                window.write_event_value('*EXECUTED*', True)
-    return Thread(target=service, name='AutoPaste_Service')
