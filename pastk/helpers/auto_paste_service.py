@@ -27,7 +27,8 @@ class AutoPasteManager:
     @staticmethod
     def paste():
         sleep(1)
-        auto.hotkey(*platform.switch_app_keys, interval=.01)
+        if platform.sys_name != 'Windows':
+            auto.hotkey(*platform.switch_app_keys, interval=.01)
         auto.hotkey(*platform.paste_keys, interval=.01)
     
     @classmethod

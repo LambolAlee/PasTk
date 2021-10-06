@@ -12,6 +12,11 @@ class ContinueWindow(Window):
     def init(cls):
         cls.window = sg.Window('连续粘贴模式', layout=cls.build(), keep_on_top=True, finalize=True)
         cls.update_button_text()
+        cls.window.TKroot.bind("<FocusOut>", cls.on_focus_in)
+
+    @classmethod
+    def on_focus_in(cls, event):
+        cls.window.TKroot.focus_set()
 
     @classmethod
     def build(cls):
