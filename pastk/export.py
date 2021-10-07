@@ -3,6 +3,7 @@ from .helpers.configure import configure
 from .selection_paste_view import SelectionWindow
 from .continuous_paste_view import ContinueWindow
 from .helpers.helper import get_callable, get_icon
+from .helpers.music_manager import play_launch_music
 from .helpers.auto_paste_service import auto_paste_service
 from .popup_view import subsection, PopupMergeWindow, SetInputPos
 
@@ -18,5 +19,6 @@ handlers = {
 
 __all__ = (
     "run_HomeWindow", "get_icon", "handlers", 
-    "configure", "auto_paste_service", "set_input_pos"
+    "configure", "auto_paste_service", "set_input_pos",
+    "play_launch_music"
 )

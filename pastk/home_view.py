@@ -16,7 +16,8 @@ from .config_view import configure
 from .abstract_window import Window
 from .config_view import ConfigWindow
 from .details_view import DetailWindow
-from .helpers.helper import copier, get_resource
+from .helpers.music_manager import playsound_thread
+from .helpers.helper import copier, get_resource, music_dir
 
 background_color = sg.theme_background_color()
 
@@ -171,6 +172,8 @@ class HomeWindow(Window):
                         if copier == []:
                             sg.popup_notify('没有复制任何文字，请重新开始！', title='连续复制', location=(window.get_screen_size()[0]-364, 0))
                             continue
+                        if configure['over_music']:
+                            playsound_thread(music_dir / 'launch' / 'over_music.wav')
                         cls.toggle_frame()
                         cls.report(copier)
                     else:

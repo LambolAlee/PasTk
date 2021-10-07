@@ -4,9 +4,11 @@ from pastk import run_HomeWindow
 from pastk.helpers.helper import set_input_pos
 from pastk import configure, auto_paste_service
 from pastk import get_icon, handlers, set_input_pos
+from pastk import play_launch_music
 
 
 @auto_paste_service
+@play_launch_music(configure['launch_music'])
 def main():
     sg.set_options(icon=get_icon(), font=('PingFang', 14), use_ttk_buttons=True)
     while True:

@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 from .abstract_window import Window
 from .helpers.helper import music_dir
 from .helpers.configure import configure
+from .helpers.music_manager import playsound_thread
 
 FONT2 = ('PingFang', 16)
 
@@ -26,11 +27,17 @@ class ConfigWindow(Window):
 
     @classmethod
     def build(cls):
+        launch_music_layout = cls.generate_simple_setting('launch_music')
+        launch_music_layout.append(cls.generate_play_button('LAUNCH'))
+        over_music_layout = cls.generate_simple_setting('over_music')
+        over_music_layout.append(cls.generate_play_button('OVER'))
         settings_tab = [
-            [sg.T('One Piece: ', font=FONT2), sg.Checkbox('enabled' if configure['one_piece'] else 'disabled', default=configure['one_piece'], k='-ONE-', enable_events=True)],
-            [sg.T('Music: ', font=FONT2), 
-            sg.Combo(cls.music.musics, size=(10,1), readonly=True, font=FONT2, enable_events=True, k='-MUSIC_SELECT-'), 
-            sg.Button('open', font=('PingFang', 12), k='-OPEN-', enable_events=True), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True)],
+            cls.generate_simple_setting('one_piece'),
+            launch_music_layout,
+            over_music_layout,
+            [sg.T('Music: ', font=FONT2), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True), 
+            sg.Combo(cls.music.musics, size=(10,1), font=FONT2, enable_events=True, k='-MUSIC_SELECT-'), 
+            cls.generate_play_button('HINT'), sg.Button('open', font=('PingFang', 12), k='-OPEN-', enable_events=True)],
             [sg.T(' ')], 
             [sg.B('Save', font=('PingFang', 12), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=('PingFang', 12), k='-QUIT-', enable_events=True)]
         ]
@@ -45,11 +52,19 @@ class ConfigWindow(Window):
         ]
         return cls.layout
 
+    @staticmethod
+    def generate_simple_setting(name: str):
+        hint = name.replace('_', ' ').capitalize() + ': '
+        return [sg.T(hint, font=FONT2), sg.Checkbox(on_off_state[configure[name].active_value], default=configure[name].active_value, k=name.upper(), enable_events=True)]
+
+    @staticmethod
+    def generate_play_button(type_):
+        return sg.B('play', font=('', 12), k=f'-PLAY_{type_}_MUSIC-', enable_events=True)
+
     @classmethod
     def update_music_state(cls, state):
         cls.window['-SAVE-'].update(disabled=not cls.music.is_modified())
-        cls.window['-MUSIC_SELECT-'].update(disabled=not state, readonly=False, value=cls.music.music_selected)
-        cls.window['-MUSIC_SELECT-'].update(readonly=True)
+        cls.window['-MUSIC_SELECT-'].update(disabled=not state, value=cls.music.music_selected)
 
     @classmethod
     def set_default_music(cls):
@@ -87,10 +102,21 @@ class ConfigWindow(Window):
                 configure.save()
                 cls.window['-SAVE-'].update(disabled=True)
 
-            elif e == '-ONE-':
-                configure['one_piece'] = v[e]
-                window['-SAVE-'].update(disabled=not configure.is_modified('one_piece'))
-                window['-ONE-'].update(text=on_off_state[v[e]])
+            elif e in ('ONE_PIECE', 'LAUNCH_MUSIC', 'OVER_MUSIC'):
+                configure[e.lower()].active_value = v[e]
+                window['-SAVE-'].update(disabled=not configure.is_modified(e.lower()))
+                window[e].update(text=on_off_state[v[e]])
+
+            elif e.endswith('_MUSIC-'):
+                type_ = e.split('_')[1]
+                if type_ == 'HINT':
+                    playsound_thread(cls.music.music_path)
+                elif type_ == 'LAUNCH':
+                    # No modification is provided for the time being
+                    playsound_thread(music_dir / 'launch' / 'launch_music.mp3')
+                else:
+                    # No modification is provided for the time being
+                    playsound_thread(music_dir / 'launch' / 'over_music.wav')
 
             elif e == '-CHECK-':
                 cls.music.music_enabled = v[e]

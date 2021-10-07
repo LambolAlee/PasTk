@@ -10,6 +10,7 @@ from json.decoder import JSONDecodeError
 from .helper import root
 from .settings import template
 from .music_manager import Music
+from .simple_setting_manager import SimpleSet
 
 
 class Configure(UserDict):
@@ -25,8 +26,11 @@ class Configure(UserDict):
         super().__init__(None)
         self.path = root / 'settings.json'
         self.raw_data = Configure._try_load(self.path)
+
         self['music'] = Music(self.raw_data['music'])
-        self['one_piece'] = self.raw_data['one_piece']
+        self['one_piece'] = SimpleSet(self.raw_data['one_piece'])
+        self['launch_music'] = SimpleSet(self.raw_data['launch_music'])
+        self['over_music'] = SimpleSet(self.raw_data['over_music'])
 
     @staticmethod
     def _save(path, data: Dict):
@@ -48,20 +52,16 @@ class Configure(UserDict):
         return data
 
     def is_modified(self, key: str):
-        try:
-            return self[key].is_modified()
-        except AttributeError:
-            return self[key] != self.raw_data[key]
+        return self[key].is_modified()
 
     def save(self):
         self.raw_data.update({
-            'one_piece': self['one_piece'],
-            'music': self['music'].save(),
+            k: self[k].save() for k in self
         })
         Configure._save(self.path, self.raw_data)
 
     def rollback(self):
-        self['music'].rollback()
+        for v in self.values(): v.rollback()
 
 # Outer class can use the instance directly rather than initializing one themselves
 configure = Configure()

@@ -1,4 +1,7 @@
 from typing import Dict
+from playsound import playsound
+from threading import Thread
+from functools import wraps
 from .helper import get_musics, music_dir, check_music_dir
 
 
@@ -64,3 +67,18 @@ class Music:
             'music_selected': self.music_selected
         })
         return self.data
+
+
+def playsound_thread(filepath):
+    Thread(target=playsound, args=(filepath,), name='PlayMusic').start()
+
+
+def play_launch_music(flag):
+    def inner_deco(f):
+        @wraps(f)
+        def wrapper():
+            if flag:
+                playsound_thread(music_dir / 'launch' / 'launch_music.mp3')
+            f()
+        return wrapper
+    return inner_deco
