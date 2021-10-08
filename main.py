@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
 
 from pastk import run_HomeWindow
-from pastk.helpers.helper import set_input_pos
 from pastk import configure, auto_paste_service
 from pastk import get_icon, handlers, set_input_pos
 from pastk import play_launch_music
@@ -16,7 +15,7 @@ def main():
         if handle_type in handlers:
             set_input_pos()
             handlers[handle_type]()
-        if configure['one_piece'] or handle_type == 1:
+        if configure['one_piece'].active_value or handle_type == 1:
             break
 
 

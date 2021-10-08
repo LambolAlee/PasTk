@@ -16,8 +16,17 @@ from .config_view import configure
 from .abstract_window import Window
 from .config_view import ConfigWindow
 from .details_view import DetailWindow
+from .helpers.system_manager import platform
 from .helpers.music_manager import playsound_thread
 from .helpers.helper import copier, get_resource, music_dir
+
+try:
+    from AppKit import NSWorkspace
+except ImportError:
+    if platform.sys_name == 'Darwin':
+        import sys
+        sg.popup_error("Detect that you are on MacOS, need to install PyObjC", "run `pip install pyobjc` to fix", title='连续复制')
+        sys.exit(1)
 
 background_color = sg.theme_background_color()
 
@@ -41,6 +50,9 @@ class HomeWindow(Window):
         cls.window['-SET-'].Widget.config(takefocus=0)
         cls.window['-RESET-'].Widget.config(takefocus=0)
         cls.window['-DETAIL-'].Widget.config(takefocus=0)
+        # Use apple built in class to switch between python and the place waiting to paste
+        if platform.sys_name == 'Darwin' and platform.app is None:
+            platform.app = NSWorkspace.sharedWorkspace().frontmostApplication()     # NSRunningApplication
 
     @classmethod
     def build(cls):

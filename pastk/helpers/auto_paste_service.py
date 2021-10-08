@@ -10,10 +10,10 @@ from .system_manager import platform
 
 def auto_paste_service(func):
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper():
         apm = AutoPasteManager().start()
         try:
-            func(*args, **kwargs)
+            func()
         finally:
             apm.stop()
     return wrapper
@@ -23,14 +23,15 @@ class AutoPasteManager:
     thread = None
     paste_order = Queue(3)
     paste_done = Queue(3)
-    
+
     @staticmethod
     def paste():
-        sleep(1)
+        sleep(.5)
         if platform.sys_name == 'Darwin':
-            auto.hotkey(*platform.switch_app_keys, interval=.01)
+            platform.app.hide()
+            sleep(.5)
         auto.hotkey(*platform.paste_keys, interval=.01)
-    
+
     @classmethod
     def order(cls, window: sg.Window=None):
         order = window if window is not None else 'go ahead'
