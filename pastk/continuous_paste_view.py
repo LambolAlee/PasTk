@@ -41,8 +41,8 @@ class ContinueWindow(Window):
         cls.window['-C_PASTE-'].update(text=text)
 
     @classmethod
-    def run_loop(cls):
-        super().run_loop()
+    def loop(cls):
+        cls.over = False
         window = cls.window
 
         while True:
@@ -62,4 +62,3 @@ class ContinueWindow(Window):
             elif e == '*EXECUTED*':
                 window.un_hide()
 
-        cls.over = False

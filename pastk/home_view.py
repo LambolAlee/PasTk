@@ -142,9 +142,7 @@ class HomeWindow(Window):
         cls.window['-MODE-'].update(visible=not cls.home_frame_visible)
 
     @classmethod
-    def run_loop(cls):
-        super().run_loop()
-
+    def loop(cls):
         cls.count = 0
         copier.clear()
         window: sg.Window = cls.window
@@ -199,17 +197,15 @@ class HomeWindow(Window):
                     cls.start_listener()
 
             elif e == '-DETAIL-':
-                window.hide()
-                DetailWindow.run_loop()
+                DetailWindow.run_loop(window)
                 cls.count = len(copier)
                 cls.update_digital()
-                window.un_hide()
 
             elif e == '-SET-':
                 if started:
                     sg.popup_auto_close('请先结束复制再修改配置！', title='连续复制', auto_close_duration=1)
                     continue
-                ConfigWindow.run_loop()
+                ConfigWindow.run_loop(window)
 
             if e in ('-HE_BING-', '-FEN_DUAN-', '-LIAN_XU-', '-XUAN_ZE-'):
                 cls.home_frame_visible = True

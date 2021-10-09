@@ -30,8 +30,8 @@ class SelectionWindow(Window):
         cls.window['-S_LIST-'].update(values=copier)
 
     @classmethod
-    def run_loop(cls):
-        super().run_loop()
+    def loop(cls):
+        cls.over = False
         window = cls.window
 
         while True:
@@ -51,4 +51,3 @@ class SelectionWindow(Window):
             elif e == '*EXECUTED*':
                 window.un_hide()
 
-        cls.over = False

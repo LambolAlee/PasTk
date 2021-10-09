@@ -19,11 +19,25 @@ class Window:
         print(f"[{cls.__name__}]> {log}")
 
     @classmethod
-    def run_loop(cls):
-        if cls.window is None:
-            cls.init()
+    def run_loop(cls, parent: sg.Window=None):
+        def run():
+            if cls.window is None:
+                cls.init()
+            else:
+                cls.window.un_hide()
+            return cls.loop()
+
+        if parent is not None:
+            parent.hide()
+            ret = run()
+            parent.un_hide()
         else:
-            cls.window.un_hide()
+            ret = run()
+        return ret
+
+    @classmethod
+    def loop(cls):
+        pass
 
     @classmethod
     def close(cls):

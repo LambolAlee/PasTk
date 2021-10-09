@@ -5,13 +5,13 @@ from .continuous_paste_view import ContinueWindow
 from .helpers.helper import get_callable, get_icon
 from .helpers.music_manager import play_launch_music
 from .helpers.auto_paste_service import auto_paste_service
-from .popup_view import subsection, PopupMergeWindow, SetInputPos
+from .popup_view import PopupMergeWindow, SetInputPos, PopupSubsectionWindow
 
 run_HomeWindow = get_callable(HomeWindow)
 set_input_pos = get_callable(SetInputPos)
 
 handlers = {
-    '-FEN_DUAN-': subsection,
+    '-FEN_DUAN-': get_callable(PopupSubsectionWindow),
     '-HE_BING-': get_callable(PopupMergeWindow),
     '-LIAN_XU-': get_callable(ContinueWindow),
     '-XUAN_ZE-': get_callable(SelectionWindow)

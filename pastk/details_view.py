@@ -64,9 +64,7 @@ class DetailWindow(Window):
             cls.window['-DETAIL_LIST-'].update(['No data here...'], set_to_index=0)
 
     @classmethod
-    def run_loop(cls):
-        super().run_loop()
-
+    def loop(cls):
         window = cls.window
         cls.set_source()
 

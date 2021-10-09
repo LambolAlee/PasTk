@@ -6,12 +6,6 @@ from .abstract_window import Window
 from .helpers.auto_paste_service import AutoPasteManager as apm
 
 
-def subsection():
-    copy('\n'.join(copier))
-    apm.order()
-    apm.wait()
-
-
 class PopupMergeWindow(Window):
 
     @classmethod
@@ -27,8 +21,7 @@ class PopupMergeWindow(Window):
         return cls.layout
 
     @classmethod
-    def run_loop(cls):
-        super().run_loop()
+    def loop(cls):
 
         while True:
             e, v = cls.window.read()
@@ -38,6 +31,36 @@ class PopupMergeWindow(Window):
             else:
                 cls.window.hide()
                 copy(v[0].join(copier))
+                apm.order(cls.window)
+
+
+class PopupSubsectionWindow(Window):
+    
+    @classmethod
+    def init(cls):
+        cls.window = sg.Window('分段粘贴模式', layout=cls.build(), keep_on_top=True, finalize=True)
+
+    @classmethod
+    def build(cls):
+        cls.layout = [
+            [sg.T('请选择分段符: '), sg.Radio('Enter换行符', 'sep', default=True), sg.Radio('Tab制表符', 'sep')],
+            [sg.Ok(font=('', 12)), sg.Cancel(font=('', 12))]
+        ]
+        return cls.layout
+
+    @classmethod
+    def loop(cls):
+
+        while True:
+            e, v = cls.window.read()
+
+            if e in (sg.WINDOW_CLOSED, 'Cancel') or e == '*EXECUTED*':
+                break
+            else:
+                # v[int] in PySimpleGUI means anonymous widget's value, here point to the value of radio button 'Tab制表符'
+                sep = '\t' if v[1] else '\n'
+                cls.window.hide()
+                copy(sep.join(copier))
                 apm.order(cls.window)
 
 
@@ -56,7 +79,6 @@ class SetInputPos(Window):
         return cls.layout
 
     @classmethod
-    def run_loop(cls):
-        super().run_loop()
+    def loop(cls):
         cls.window.read()
         cls.window.hide()

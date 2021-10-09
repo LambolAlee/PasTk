@@ -72,9 +72,7 @@ class ConfigWindow(Window):
         cls.window['-MUSIC_SELECT-'].update(values=cls.music.musics)
 
     @classmethod
-    def run_loop(cls):
-        super().run_loop()
-
+    def loop(cls):
         cls.modified = False
         window = cls.window
 
