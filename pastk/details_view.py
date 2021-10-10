@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from .abstract_window import Window
 from .helpers.helper import copier, get_resource
+from .config.system_manager import platform
 
 background_color = sg.theme_background_color()
 
@@ -14,16 +15,16 @@ class DetailWindow(Window):
     def build(cls):
         cls.layout = [[sg.Frame('', [
             [sg.Column([[sg.Listbox([], pad=(0,0), select_mode='LISTBOX_SELECT_MODE_SINGLE', 
-            enable_events=True, k='-DETAIL_LIST-', no_scrollbar=True, size=(12, 15), font=('PingFang', 16))],
+            enable_events=True, k='-DETAIL_LIST-', no_scrollbar=True, size=(12, 15), font=platform.get_font('setting_text'))],
             [Image_B('-D_ADD-', 'square-plus-colored.png'),
             Image_B('-D_REMOVE-', 'square-minus-colored.png'),
             Image_B('-D_LEAVE-', 'square-caret-right-colored.png')
             ]], expand_y=True),
 
             sg.Column([
-                [sg.Multiline(background_color='#B2D5C0', pad=(0,0), default_text='Hello World', font=('PingFang', 16), k='-TXT-', size=(40, 16), no_scrollbar=True, enable_events=True)],
-                [sg.T('Enter to a newline', text_color='#E6E6FA', font=('PingFang', 12)), sg.T(' '), 
-                sg.T('Ctrl-Enter to submit the text', text_color='#E6E6FA', font=('PingFang', 12)), 
+                [sg.Multiline(background_color='#B2D5C0', pad=(0,0), default_text='Hello World', font=platform.get_font('setting_text'), k='-TXT-', size=(40, 16), no_scrollbar=True, enable_events=True)],
+                [sg.T('Enter to a newline', text_color='#E6E6FA', font=platform.get_font('button')), sg.T(' '), 
+                sg.T('Ctrl-Enter to submit the text', text_color='#E6E6FA', font=platform.get_font('button')), 
                 sg.T(' ', size=(4,1)), sg.B('', image_filename=get_resource('squarecheck.png'), button_color=background_color, mouseover_colors=background_color, pad=(0,0), k='-SUBMIT-', enable_events=True)],
             ], expand_y=True)]])
         ]]

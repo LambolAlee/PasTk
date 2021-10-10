@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 from .abstract_window import Window
 from .helpers.helper import music_dir
 from .config.configure import configure
+from .config.system_manager import platform
 from .helpers.helper import playsound_thread
 
 FONT2 = ('PingFang', 16)
@@ -35,15 +36,15 @@ class ConfigWindow(Window):
             cls.generate_simple_setting('one_piece'),
             launch_music_layout,
             over_music_layout,
-            [sg.T('Music: ', font=FONT2), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True), 
-            sg.Combo(cls.music.musics, size=(10,1), font=FONT2, enable_events=True, k='-MUSIC_SELECT-'), 
-            cls.generate_play_button('HINT'), sg.Button('open', font=('PingFang', 12), k='-OPEN-', enable_events=True)],
+            [sg.T('Music: ', font=platform.get_font('setting_text')), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True), 
+            sg.Combo(cls.music.musics, size=(10,1), font=platform.get_font('setting_text'), enable_events=True, k='-MUSIC_SELECT-'), 
+            cls.generate_play_button('HINT'), sg.Button('open', font=platform.get_font('button'), k='-OPEN-', enable_events=True)],
             [sg.T(' ')], 
-            [sg.B('Save', font=('PingFang', 12), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=('PingFang', 12), k='-QUIT-', enable_events=True)]
+            [sg.B('Save', font=platform.get_font('button'), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=('PingFang', 12), k='-QUIT-', enable_events=True)]
         ]
 
         about_tab = [
-            [sg.T('PasTk', font=('PingFang', 32), text_color='white')],
+            [sg.T('PasTk', font=platform.get_font('big'), text_color='white')],
             [sg.T('Written in python using PySimpleGUI')]
         ]
 
@@ -55,11 +56,11 @@ class ConfigWindow(Window):
     @staticmethod
     def generate_simple_setting(name: str):
         hint = name.replace('_', ' ').capitalize() + ': '
-        return [sg.T(hint, font=FONT2), sg.Checkbox(on_off_state[configure[name].active_value], default=configure[name].active_value, k=name.upper(), enable_events=True)]
+        return [sg.T(hint, font=platform.get_font('setting_text')), sg.Checkbox(on_off_state[configure[name].active_value], default=configure[name].active_value, k=name.upper(), enable_events=True)]
 
     @staticmethod
     def generate_play_button(type_):
-        return sg.B('play', font=('', 12), k=f'-PLAY_{type_}_MUSIC-', enable_events=True)
+        return sg.B('play', font=platform.get_font('button'), k=f'-PLAY_{type_}_MUSIC-', enable_events=True)
 
     @classmethod
     def update_music_state(cls, state):

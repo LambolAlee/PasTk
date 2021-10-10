@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 from pyperclip import copy
 from .helpers.helper import copier
 from .abstract_window import Window
+from .config.system_manager import platform
 from .helpers.auto_paste_service import AutoPasteManager as apm
 
 
@@ -16,7 +17,7 @@ class PopupMergeWindow(Window):
     def build(cls):
         cls.layout = [
             [sg.T('请输入连接符')], [sg.Input(size=(20, 1))], 
-            [sg.Ok(font=('PingFang', 12)), sg.Cancel(font=('PingFang', 12))]
+            [sg.Ok(font=platform.get_font('button')), sg.Cancel(font=platform.get_font('button'))]
         ]
         return cls.layout
 
@@ -44,7 +45,7 @@ class PopupSubsectionWindow(Window):
     def build(cls):
         cls.layout = [
             [sg.T('请选择分段符: '), sg.Radio('Enter换行符', 'sep', default=True), sg.Radio('Tab制表符', 'sep')],
-            [sg.Ok(font=('', 12)), sg.Cancel(font=('', 12))]
+            [sg.Ok(font=platform.get_font('button')), sg.Cancel(font=platform.get_font('button'))]
         ]
         return cls.layout
 
@@ -74,7 +75,7 @@ class SetInputPos(Window):
     def build(cls):
         cls.layout = [
             [sg.T('请点击需要粘贴的地方')], 
-            [sg.B('选好了', font=('', 12)), sg.T('自动粘贴失败仍可手动粘贴', text_color='#E6E6FA')]
+            [sg.B('选好了', font=platform.get_font('button')), sg.T('自动粘贴失败仍可手动粘贴', text_color='#E6E6FA')]
         ]
         return cls.layout
 

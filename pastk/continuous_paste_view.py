@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 from pyperclip import copy
 from .helpers.helper import copier
 from .abstract_window import Window
+from .config.system_manager import platform
 from .helpers.auto_paste_service import AutoPasteManager as apm
 
 
@@ -22,7 +23,7 @@ class ContinueWindow(Window):
     def build(cls):
         cls.layout = [
             [sg.Frame('', [
-                [sg.B('Hello World', font=('PingFang', 16), size=(20, 2), enable_events=True, k='-C_PASTE-')],
+                [sg.B('Hello World', font=platform.get_font('setting_text'), size=(20, 2), enable_events=True, k='-C_PASTE-')],
                 [sg.B('不贴了，退出', size=(26, 1), enable_events=True, k='-C_QUIT-')]
             ], element_justification='center')]
         ]
