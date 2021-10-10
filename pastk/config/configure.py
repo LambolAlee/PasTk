@@ -7,8 +7,8 @@ from json import dump, load
 from collections import UserDict
 from json.decoder import JSONDecodeError
 
-from .helper import root
-from .settings import template
+from ..helpers.helper import root
+from ..helpers.settings import template
 from .music_manager import Music
 from .simple_setting_manager import SimpleSet
 

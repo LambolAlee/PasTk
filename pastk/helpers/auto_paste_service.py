@@ -5,7 +5,7 @@ from time import sleep
 from queue import Queue
 from functools import wraps
 from threading import Thread
-from .system_manager import platform
+from ..config.system_manager import platform
 
 
 def auto_paste_service(func):
@@ -28,10 +28,10 @@ class AutoPasteManager:
     def paste():
         if platform.sys_name == 'Darwin':
             platform.app.hide()
-            sleep(.5)
+            sleep(.7)
         else:
             sleep(.5)
-        auto.hotkey(*platform.paste_keys, interval=.01)
+        auto.hotkey(*platform.paste_keys)
 
     @classmethod
     def order(cls, window: sg.Window=None):

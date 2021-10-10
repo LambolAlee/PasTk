@@ -16,9 +16,8 @@ from .config_view import configure
 from .abstract_window import Window
 from .config_view import ConfigWindow
 from .details_view import DetailWindow
-from .helpers.system_manager import platform
-from .helpers.music_manager import playsound_thread
-from .helpers.helper import copier, get_resource, music_dir
+from .config.system_manager import platform
+from .helpers.helper import copier, get_resource, music_dir, playsound_thread
 
 try:
     from AppKit import NSWorkspace

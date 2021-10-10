@@ -134,3 +134,6 @@ dmypy.json
 # logo design file
 logo_design/
 resources/logo/icons.iconset/
+
+# others
+HOWTOPACKAGE in macOS.txt

@@ -2,8 +2,8 @@ import PySimpleGUI as sg
 
 from .abstract_window import Window
 from .helpers.helper import music_dir
-from .helpers.configure import configure
-from .helpers.music_manager import playsound_thread
+from .config.configure import configure
+from .helpers.helper import playsound_thread
 
 FONT2 = ('PingFang', 16)
 

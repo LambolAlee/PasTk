@@ -1,8 +1,11 @@
 import PySimpleGUI as sg
 
 from pathlib import Path
+from functools import wraps
+from threading import Thread
+from playsound import playsound
 from ..abstract_window import Window
-from .system_manager import platform
+from ..config.system_manager import platform
 
 # copier is the public list used to store the copied contents temporarily,
 # all the members in the package can read and write the list
@@ -50,3 +53,18 @@ def get_callable(class_: Window):
         class_.close()
         return ret
     return wrapper
+
+
+def playsound_thread(filepath):
+    Thread(target=playsound, args=(filepath,), name='PlayMusic').start()
+
+
+def play_launch_music(flag):
+    def inner_deco(f):
+        @wraps(f)
+        def wrapper():
+            if flag:
+                playsound_thread(music_dir / 'launch' / 'launch_music.mp3')
+            f()
+        return wrapper
+    return inner_deco
