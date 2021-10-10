@@ -6,6 +6,7 @@ class Platform:
     size_darwin = {
         "text": 14,
         "button": 12,
+        "home_hint": 12,
         "setting_text": 16,
         "setting_button": 12,
         "hint": 12,
@@ -15,6 +16,7 @@ class Platform:
     size_windows = {
         "text": 10,
         "button": 10,
+        "home_hint": 8,
         "setting_text": 9,
         "setting_button": 8,
         "hint": 7,

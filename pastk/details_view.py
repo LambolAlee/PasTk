@@ -25,7 +25,7 @@ class DetailWindow(Window):
                 [sg.Multiline(background_color='#B2D5C0', pad=(0,0), default_text='Hello World', font=platform.get_font('setting_text'), k='-TXT-', size=(40, 16), no_scrollbar=True, enable_events=True)],
                 [sg.T('Enter to a newline', text_color='#E6E6FA', font=platform.get_font('hint')), sg.T(' '), 
                 sg.T('Ctrl-Enter to submit the text', text_color='#E6E6FA', font=platform.get_font('hint')), 
-                sg.T(' ', size=(4,1)), sg.B('', image_filename=get_resource('squarecheck.png'), button_color=background_color, mouseover_colors=background_color, pad=(0,0), k='-SUBMIT-', enable_events=True)],
+                sg.B('', image_filename=get_resource('squarecheck.png'), button_color=background_color, mouseover_colors=background_color, pad=(0,0), k='-SUBMIT-', enable_events=True)],
             ], expand_y=True)]])
         ]]
         return cls.layout
@@ -39,6 +39,7 @@ class DetailWindow(Window):
         cls.window['-D_ADD-'].Widget.configure(takefocus=0)
         cls.window['-D_REMOVE-'].Widget.configure(takefocus=0)
         cls.window['-D_LEAVE-'].Widget.configure(takefocus=0)
+        cls.window['-SUBMIT-'].Widget.configure(takefocus=0)
 
     @classmethod
     def update_list(cls, event):
