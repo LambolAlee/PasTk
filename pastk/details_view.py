@@ -23,8 +23,8 @@ class DetailWindow(Window):
 
             sg.Column([
                 [sg.Multiline(background_color='#B2D5C0', pad=(0,0), default_text='Hello World', font=platform.get_font('setting_text'), k='-TXT-', size=(40, 16), no_scrollbar=True, enable_events=True)],
-                [sg.T('Enter to a newline', text_color='#E6E6FA', font=platform.get_font('button')), sg.T(' '), 
-                sg.T('Ctrl-Enter to submit the text', text_color='#E6E6FA', font=platform.get_font('button')), 
+                [sg.T('Enter to a newline', text_color='#E6E6FA', font=platform.get_font('hint')), sg.T(' '), 
+                sg.T('Ctrl-Enter to submit the text', text_color='#E6E6FA', font=platform.get_font('hint')), 
                 sg.T(' ', size=(4,1)), sg.B('', image_filename=get_resource('squarecheck.png'), button_color=background_color, mouseover_colors=background_color, pad=(0,0), k='-SUBMIT-', enable_events=True)],
             ], expand_y=True)]])
         ]]

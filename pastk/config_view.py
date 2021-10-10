@@ -6,7 +6,6 @@ from .config.configure import configure
 from .config.system_manager import platform
 from .helpers.helper import playsound_thread
 
-FONT2 = ('PingFang', 16)
 
 on_off_state = {True: 'enabled', False: 'disabled'}
 
@@ -40,7 +39,7 @@ class ConfigWindow(Window):
             sg.Combo(cls.music.musics, size=(10,1), font=platform.get_font('setting_text'), enable_events=True, k='-MUSIC_SELECT-'), 
             cls.generate_play_button('HINT'), sg.Button('open', font=platform.get_font('button'), k='-OPEN-', enable_events=True)],
             [sg.T(' ')], 
-            [sg.B('Save', font=platform.get_font('button'), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=('PingFang', 12), k='-QUIT-', enable_events=True)]
+            [sg.B('Save', font=platform.get_font('setting_button'), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=platform.get_font('setting_button'), k='-QUIT-', enable_events=True)]
         ]
 
         about_tab = [
@@ -49,18 +48,18 @@ class ConfigWindow(Window):
         ]
 
         cls.layout = [
-            [sg.TabGroup([[sg.Tab('Settings', settings_tab), sg.Tab('About', about_tab)]], font=('PingFang', 12))]
+            [sg.TabGroup([[sg.Tab('Settings', settings_tab), sg.Tab('About', about_tab)]], font=platform.get_font('hint'))]
         ]
         return cls.layout
 
     @staticmethod
     def generate_simple_setting(name: str):
         hint = name.replace('_', ' ').capitalize() + ': '
-        return [sg.T(hint, font=platform.get_font('setting_text')), sg.Checkbox(on_off_state[configure[name].active_value], default=configure[name].active_value, k=name.upper(), enable_events=True)]
+        return [sg.T(hint, font=platform.get_font('setting_text')), sg.Checkbox(on_off_state[configure[name].active_value], default=configure[name].active_value, font=platform.get_font('hint'), k=name.upper(), enable_events=True)]
 
     @staticmethod
     def generate_play_button(type_):
-        return sg.B('play', font=platform.get_font('button'), k=f'-PLAY_{type_}_MUSIC-', enable_events=True)
+        return sg.B('play', font=platform.get_font('setting_button'), k=f'-PLAY_{type_}_MUSIC-', enable_events=True)
 
     @classmethod
     def update_music_state(cls, state):

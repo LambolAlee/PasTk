@@ -6,17 +6,19 @@ class Platform:
     size_darwin = {
         "text": 14,
         "button": 12,
-        "tiny": 10,
         "setting_text": 16,
+        "setting_button": 12,
+        "hint": 12,
         "big": 32
     }
 
     size_windows = {
         "text": 10,
         "button": 10,
-        "tiny": 7,
         "setting_text": 9,
-        "big": 20
+        "setting_button": 8,
+        "hint": 7,
+        "big": 22
     }
 
     def __init__(self):
