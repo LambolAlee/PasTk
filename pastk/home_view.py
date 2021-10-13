@@ -79,12 +79,18 @@ class HomeWindow(Window):
         cls.listening = True
         playable = music.is_playable()
 
+        def is_current_text_ok(current_text, original_text):
+            if current_text is not None and current_text.strip():
+                if original_text != current_text:
+                    return True
+            return False
+
         def wrapper_listener():
             cls.report('Start listening...')
             original_text = paste()
             while cls.listening:
                 current_text = paste()
-                if original_text != current_text and current_text is not None:
+                if is_current_text_ok(current_text, original_text):
                     cls.window.write_event_value('*NEW_CONTENT*', current_text)
                     if playable:
                         cls.music_queue.put('play')

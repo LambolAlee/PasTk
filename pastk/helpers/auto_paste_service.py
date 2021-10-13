@@ -28,9 +28,7 @@ class AutoPasteManager:
     def paste():
         if platform.sys_name == 'Darwin':
             platform.app.hide()
-            sleep(.7)
-        else:
-            sleep(.5)
+        sleep(1)
         auto.hotkey(*platform.paste_keys)
 
     @classmethod

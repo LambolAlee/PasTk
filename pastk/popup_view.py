@@ -69,7 +69,7 @@ class SetInputPos(Window):
 
     @classmethod
     def init(cls):
-        cls.window = sg.Window("连续复制", layout=cls.build(), keep_on_top=True, finalize=True)
+        cls.window = sg.Window("连续复制", layout=cls.build(), keep_on_top=True, enable_close_attempted_event=True, finalize=True)
 
     @classmethod
     def build(cls):
