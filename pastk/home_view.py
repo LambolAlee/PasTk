@@ -57,7 +57,7 @@ class HomeWindow(Window):
     def build(cls):
         layout_home = [
             [sg.T('0 0', font=platform.get_font('big'), pad=(0,5), justification='right', k='-COUNTER-'), sg.Column([[sg.T(' ')], [sg.T('条已复制', font=platform.get_font('home_hint'), text_color='#d1cfa3')]], pad=(0,5)), sg.T(' ', size=(6,1)), sg.Column([[sg.B('', k='-DETAIL-', enable_events=True, image_filename=get_resource('detail.png'), button_color=background_color, image_subsample=2, mouseover_colors=background_color)], [sg.T(' ')]])],
-            [sg.Frame('', [[Image_B('-SET-', 'settings.png'), sg.T(' ', background_color='#a6a6b9'), sg.B('Start', k='-START-', size=(10, 1), button_color=('white', '#464d64'), mouseover_colors=('white', '#575d70'), focus=True), sg.T(' ', background_color='#a6a6b9'), Image_B('-RESET-', 'reset.png', disabled=True)]], background_color='#a6a6b9')]
+            [sg.Frame('', [[Image_B('-SET-', 'settings.png'), sg.T(' ', background_color='#a6a6b9'), sg.B('开始', k='-START-', size=(10, 1), button_color=('white', '#464d64'), mouseover_colors=('white', '#575d70'), focus=True), sg.T(' ', background_color='#a6a6b9'), Image_B('-RESET-', 'reset.png', disabled=True)]], background_color='#a6a6b9')]
         ]
 
         layout_mode = [
@@ -187,7 +187,7 @@ class HomeWindow(Window):
                         if copier == []:
                             sg.popup_notify('没有复制任何文字，请重新开始！', title='连续复制', location=(window.get_screen_size()[0]-364, 0))
                             continue
-                        if configure['over_music']:
+                        if configure['over_music'].active_value:
                             playsound_thread(music_dir / 'launch' / 'over_music.wav')
                         cls.toggle_frame()
                         cls.report(copier)

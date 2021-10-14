@@ -7,7 +7,7 @@ from .config.system_manager import platform
 from .helpers.helper import playsound_thread
 
 
-on_off_state = {True: 'enabled', False: 'disabled'}
+on_off_state = {True: '开启', False: '禁用'}
 
 class ConfigWindow(Window):
     music = configure['music']
@@ -27,19 +27,19 @@ class ConfigWindow(Window):
 
     @classmethod
     def build(cls):
-        launch_music_layout = cls.generate_simple_setting('launch_music')
+        launch_music_layout = cls.generate_simple_setting('启动音乐: ', 'launch_music')
         launch_music_layout.append(cls.generate_play_button('LAUNCH'))
-        over_music_layout = cls.generate_simple_setting('over_music')
+        over_music_layout = cls.generate_simple_setting('结束粘贴音乐: ', 'over_music')
         over_music_layout.append(cls.generate_play_button('OVER'))
         settings_tab = [
-            cls.generate_simple_setting('one_piece'),
+            cls.generate_simple_setting('一次性模式: ', 'one_piece'),
             launch_music_layout,
             over_music_layout,
-            [sg.T('Music: ', font=platform.get_font('setting_text')), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True), 
+            [sg.T('粘贴音乐: ', font=platform.get_font('setting_text')), sg.Checkbox('', default=cls.music.music_enabled, k='-CHECK-', enable_events=True), 
             sg.Combo(cls.music.musics, size=(10,1), font=platform.get_font('setting_text'), enable_events=True, k='-MUSIC_SELECT-'), 
-            cls.generate_play_button('HINT'), sg.Button('open', font=platform.get_font('button'), k='-OPEN-', enable_events=True)],
+            cls.generate_play_button('HINT'), sg.Button('打开文件夹', font=platform.get_font('button'), k='-OPEN-', enable_events=True)],
             [sg.T(' ')], 
-            [sg.B('Save', font=platform.get_font('setting_button'), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('Quit', font=platform.get_font('setting_button'), k='-QUIT-', enable_events=True)]
+            [sg.B('保存', font=platform.get_font('setting_button'), disabled=True, k='-SAVE-', enable_events=True, disabled_button_color='#cccccc'), sg.B('退出', font=platform.get_font('setting_button'), k='-QUIT-', enable_events=True)]
         ]
 
         about_tab = [
@@ -48,18 +48,17 @@ class ConfigWindow(Window):
         ]
 
         cls.layout = [
-            [sg.TabGroup([[sg.Tab('Settings', settings_tab), sg.Tab('About', about_tab)]], font=platform.get_font('hint'))]
+            [sg.TabGroup([[sg.Tab('设置', settings_tab), sg.Tab('关于', about_tab)]], font=platform.get_font('hint'))]
         ]
         return cls.layout
 
     @staticmethod
-    def generate_simple_setting(name: str):
-        hint = name.replace('_', ' ').capitalize() + ': '
+    def generate_simple_setting(hint, name: str):
         return [sg.T(hint, font=platform.get_font('setting_text')), sg.Checkbox(on_off_state[configure[name].active_value], default=configure[name].active_value, font=platform.get_font('hint'), k=name.upper(), enable_events=True)]
 
     @staticmethod
     def generate_play_button(type_):
-        return sg.B('play', font=platform.get_font('setting_button'), k=f'-PLAY_{type_}_MUSIC-', enable_events=True)
+        return sg.B('播放', font=platform.get_font('setting_button'), k=f'-PLAY_{type_}_MUSIC-', enable_events=True)
 
     @classmethod
     def update_music_state(cls, state):
