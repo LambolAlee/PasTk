@@ -179,7 +179,7 @@ class HomeWindow(Window):
             elif e in ('-START-', '-RESET-'):
                 if started:
                     started = False
-                    window['-START-'].update('Start')
+                    window['-START-'].update('开始')
                     window['-RESET-'].update(disabled=True)
                     cls.quit_listener()
 
@@ -197,7 +197,7 @@ class HomeWindow(Window):
                         window['-COUNTER-'].update('0 0')
                 else:
                     started = True
-                    window['-START-'].update('Over')
+                    window['-START-'].update('结束')
                     window['-RESET-'].update(disabled=False)
                     cls.start_listener()
 
