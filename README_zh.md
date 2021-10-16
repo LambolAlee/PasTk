@@ -158,7 +158,9 @@ python main.py
 
 3. 点击结束按钮结束复制然后选择需要的粘贴模式
 
-4. **<u>*注意点：*</u>** 事先点一下待粘贴的位置，然后再进行后续操作![important](README_img/pastk6.png)
+4. **<u>*注意点：*</u>** 事先点一下待粘贴的位置，然后再进行后续操作
+
+   ![important](README_img/pastk6.png)
 
 5. 使用合适的粘贴模式进行粘贴
 
