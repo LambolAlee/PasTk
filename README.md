@@ -1,4 +1,4 @@
-<img src="resources/logo/PasTk_logo_complete.png" alt="logo" style="zoom: 10%;;" />
+<div align="center"><img src="resources/logo/PasTk_logo_complete.png" alt="logo" width="512" height="512" /></div>
 
 <p align="center">
 	<a href="https://www.python.org">
@@ -25,7 +25,23 @@
 
 ## Table of Contents
 
-[toc]
+- [Introduction](#introduction)
+- [Install](#install)
+    - [Windows User](#windows-user)
+    - [macOS User](#macos-user)
+        <br/>&emsp;&emsp;[LaunchBar for Example](#launchbar-for-example)
+    - [Linux User](#linux-user)
+- [Build](#build)
+    - [Build From Source](#build-from-source)
+- [Usage](#usage)
+    - [Tutorial](#tutorial)
+    - [Copy Continuously](#copy-continuously)
+    - [Manage Copied Contents](#manage-copied-contents)
+    - [Settings Panel](#settings-panel)
+    - [Multi-Paste Mode](#multi-paste-mode)
+- [Thanks](#thanks)
+- [Links](#links)
+- [License](#license)
 
 ## Introduction
 
@@ -41,15 +57,19 @@ At the beginning, I migrate all my workflow to MacBook pro this year. For I am a
 
 This project has deployed [Github Action](https://github.com/LambolAlee/PasTk/actions/workflows/python-app-Windows.yml), you can download the new generated file there in artifact.
 
-### macOS User ( *HELP WANTED* )
-
- [![macOS](https://img.shields.io/github/workflow/status/LambolAlee/PasTk/Python%20application%20on%20macOS?logo=apple)](https://github.com/LambolAlee/PasTk/actions/workflows/python-app-macOS.yml)
+### macOS User
+<p>
+	<a href="https://github.com/LambolAlee/PasTk/actions/workflows/python-app-macOS.yml">
+		<img src="https://img.shields.io/github/workflow/status/LambolAlee/PasTk/Python%20application%20on%20macOS?logo=apple"/>
+	</a>
+	<img src="https://img.shields.io/badge/HELP-WANTED-%236699FF"/>
+</p>
 
 (*There is a puzzling problem I met when packaging the program, for detail you can see this [issue]()*)
 
 **For now**, there is another method which is even more convenient comparing to double clickcing the .app file. You can download the source code directly and deploy it to your launch app such as [LaunchBar](https://www.obdev.at/products/launchbar/index.html) or [Alfred](https://www.alfredapp.com) or any other apps with similar functions.
 
-#### LaunchBar for example
+#### LaunchBar for Example
 
 - **Step 1**
 
@@ -101,7 +121,9 @@ This project has deployed [Github Action](https://github.com/LambolAlee/PasTk/ac
 
   ![use](README_img/launchbar7.png)
 
-### Linux User ( *HELP WANTED* )
+### Linux User
+
+<img src="https://img.shields.io/badge/HELP-WANTED-%236699FF"/>
 
 I don't have a Linux computer and I haven't used Linux system for a long time. May be support later.:pray:
 
@@ -202,29 +224,22 @@ Screenshot of paste-mode selection panel
 
 - Merge paste: join all copied contents with a string (*default is ""*)
 
-  <img src="README_img/pastk7.png" align="left">
+  <img src="README_img/pastk7.png">
 
   
-
 - Segmented paste: join all copied contents with Enter (\\n)(*default*) or Tab (\\t)
 
-  <img src="README_img/pastk8.png" align="left">
+  <img src="README_img/pastk8.png">
 
   
-
 - Continuous paste: paste the contents one by one (FIFO) and only paste when you tap next
 
-  <img src="README_img/pastk9.png" align="left">
+  <img src="README_img/pastk9.png">
 
   
-
 - List-selection paste: popup a list contained all the contents, you can select the item whatever you like to paste
 
-  <img src="README_img/pastk10.png" align="left">
-
-## License
-
-PasTk is licensed under [GPLv3](LICENSE)
+  <img src="README_img/pastk10.png">
 
 ## Thanks
 
@@ -237,3 +252,7 @@ My classmate who made the beautiful [launch music](https://github.com/LambolAlee
 - [爱给网](https://www.aigei.com/)
 
 - [站长素材网](https://sc.chinaz.com/yinxiao/)
+
+## License
+
+PasTk is licensed under [GPLv3](LICENSE)
