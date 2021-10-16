@@ -1,4 +1,4 @@
-<img src="resources/logo/PasTk_logo_complete.png" alt="logo" style="zoom: 10%;;" />
+<div align="center"><img src="resources/logo/PasTk_logo_complete.png" alt="logo" width="512" height="512" /></div>
 
 <p align="center">
 	<a href="https://www.python.org">
@@ -25,11 +25,27 @@
 
 ## 目录
 
-[toc]
+- [介绍](#介绍)
+- [安装](#安装)
+    - [Windows 用户](#windows-用户)
+    - [macOS 用户](#macos-用户)
+        <br/>&emsp;&emsp;[通过LaunchBar使用](#通过launchbar使用)
+    - [Linux 用户](#linux-用户)
+- [构建](#构建)
+    - [从源码构建](#从源码构建)
+- [使用](#使用)
+    - [教程](#教程)
+    - [连续复制](#连续复制)
+    - [管理复制的文本](#管理复制的文本)
+    - [设置面板](#设置面板)
+    - [多种粘贴模式](#多种粘贴模式)
+- [感谢](#感谢)
+- [链接](#链接)
+- [许可](#许可)
 
 ## 介绍
 
-在今年中旬，我换了台苹果电脑作为主力机使用。作为一个荣耀的医学生，需要一个工具来帮助我复制粘贴许多文字到医学笔记中。此前，我使用[ Quicker](https://getquicker.net)来简化这一操作，如今却没有找到类似的替代工具（当然很大可能性是我没找到）。虽然知道有很多非常优秀的剪贴板管理软件例如[Paste](https://pasteapp.io)。这是我非常喜欢的一款软件，它可以复制非常多类型的内容到临时的剪贴板里，来供我选取调用，也有stack paste 模式来按顺序的粘贴（类似于选择粘贴模式）但是相比于连续复制，其实对于做笔记来说更需要的是后者，所以我决定自己写一个工具。于是就诞生了PasTk。
+今年中旬，我换了台苹果电脑作为主力机使用。作为一个荣耀的医学生，需要一个工具来帮助我复制粘贴许多文字到医学笔记中。此前，我使用 [Quicker](https://getquicker.net) 来简化这一操作，如今却没有找到类似的替代工具（当然很大可能性是我没找到）。虽然知道有很多非常优秀的剪贴板管理软件例如 [Paste](https://pasteapp.io)。这是我非常喜欢的一款软件，它可以复制非常多类型的内容到临时的剪贴板里，来供我选取调用，也有stack paste 模式来按顺序的粘贴（类似于选择粘贴模式）但是相比于连续复制，其实对于做笔记来说更需要的是后者，所以我决定自己写一个工具。于是就诞生了PasTk。
 
 ## 安装
 
@@ -41,9 +57,14 @@
 
 本项目部署了[Github Action](https://github.com/LambolAlee/PasTk/actions/workflows/python-app-Windows.yml) 有兴趣使用的用户可以到Action生成的artifact下找到可以使用的软件。
 
-### macOS 用户 ( *打包遇到困难* )
+### macOS 用户
 
- [![macOS](https://img.shields.io/github/workflow/status/LambolAlee/PasTk/Python%20application%20on%20macOS?logo=apple)](https://github.com/LambolAlee/PasTk/actions/workflows/python-app-macOS.yml)
+<p>
+	<a href="https://github.com/LambolAlee/PasTk/actions/workflows/python-app-macOS.yml">
+		<img src="https://img.shields.io/github/workflow/status/LambolAlee/PasTk/Python%20application%20on%20macOS?logo=apple"/>
+	</a>
+	<img src="https://img.shields.io/badge/HELP-WANTED-%236699FF"/>
+</p>
 
 （*在打包的时候遇到了一个狠迷人的问题，详情可移步 [issue]()*）
 
@@ -99,7 +120,9 @@
 
   ![use](README_img/launchbar7.png)
 
-### Linux 用户 ( *求助求助* )
+### Linux 用户
+
+<img src="https://img.shields.io/badge/HELP-WANTED-%236699FF"/>
 
 我没有运行Linux的电脑然后我也很久很久没有用过Linux了。希望能早日支持:pray:
 
@@ -200,29 +223,22 @@ python main.py
 
 - 合并粘贴：使用连接符来连接所有的文本（默认""空字符串）
 
-  <img src="README_img/pastk7.png" align="left">
-
+  <img src="README_img/pastk7.png">
   
 
 - 分段粘贴：使用换行符或制表符来连接所有文本（默认换行符）
 
-  <img src="README_img/pastk8.png" align="left">
+  <img src="README_img/pastk8.png">
 
-  
 
 - 连续粘贴：通过点击粘贴的按钮来有序可控地粘贴文本（遵循先进先出的顺序）
 
-  <img src="README_img/pastk9.png" align="left">
+  <img src="README_img/pastk9.png">
 
-  
 
 - 选择粘贴模式：以列表的形式呈现所有待粘贴的选项，可以有选择地粘贴
 
-  <img src="README_img/pastk10.png" align="left">
-
-## 许可
-
-PasTk 以 [GPLv3 ](LICENSE)许可证发布
+  <img src="README_img/pastk10.png">
 
 ## 感谢
 
@@ -235,3 +251,7 @@ PasTk 以 [GPLv3 ](LICENSE)许可证发布
 - [爱给网](https://www.aigei.com/)
 
 - [站长素材网](https://sc.chinaz.com/yinxiao/)
+
+## 许可
+
+PasTk 以 [GPLv3 ](LICENSE)许可证发布
