@@ -1,10 +1,10 @@
-import pyautogui as auto
 import PySimpleGUI as sg
 
 from time import sleep
 from queue import Queue
 from functools import wraps
 from threading import Thread
+from pynput.keyboard import Controller
 from ..config.system_manager import platform
 
 
@@ -23,13 +23,7 @@ class AutoPasteManager:
     thread = None
     paste_order = Queue(3)
     paste_done = Queue(3)
-
-    @staticmethod
-    def paste():
-        if platform.sys_name == 'Darwin':
-            platform.app.hide()
-        sleep(1)
-        auto.hotkey(*platform.paste_keys)
+    keyboard = Controller()
 
     @classmethod
     def order(cls, window: sg.Window=None):
@@ -39,6 +33,13 @@ class AutoPasteManager:
     @classmethod
     def wait(cls):
         return cls.paste_done.get()
+
+    def paste(self):
+        if platform.sys_name == 'Darwin':
+            platform.app.hide()
+        sleep(.3)
+        with self.keyboard.pressed(platform.modifier):
+            self.keyboard.tap('v')
 
     def start(self):
         def service():

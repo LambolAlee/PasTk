@@ -11,6 +11,7 @@ from ..helpers.helper import root
 from ..helpers.settings import template
 from .music_manager import Music
 from .simple_setting_manager import SimpleSet
+from .language import Language
 
 
 class Configure(UserDict):
@@ -31,6 +32,7 @@ class Configure(UserDict):
         self['one_piece'] = SimpleSet(self.raw_data['one_piece'])
         self['launch_music'] = SimpleSet(self.raw_data['launch_music'])
         self['over_music'] = SimpleSet(self.raw_data['over_music'])
+        self['lang'] = Language(self.raw_data['lang'])
 
     @staticmethod
     def _save(path, data: Dict):
@@ -54,6 +56,9 @@ class Configure(UserDict):
     def is_modified(self, key: str):
         return self[key].is_modified()
 
+    def any_modified(self):
+        return { k:v for k, v in self.items() if v.is_modified() }
+
     def save(self):
         self.raw_data.update({
             k: self[k].save() for k in self
@@ -63,5 +68,7 @@ class Configure(UserDict):
     def rollback(self):
         for v in self.values(): v.rollback()
 
+
 # Outer class can use the instance directly rather than initializing one themselves
 configure = Configure()
+tr = configure['lang'].tr

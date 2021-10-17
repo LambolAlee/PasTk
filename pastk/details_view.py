@@ -1,11 +1,12 @@
 import PySimpleGUI as sg
+from .config.configure import tr
 from .abstract_window import Window
-from .helpers.helper import copier, get_resource
 from .config.system_manager import platform
+from .helpers.helper import copier, get_resource
 
 background_color = sg.theme_background_color()
 
-prompt = '$> 请向文本框中添加内容...'
+prompt = tr('$> 请向文本框中添加内容...')
 Image_B = lambda key, filename: sg.Button('', image_subsample=20, pad=(0,3), mouseover_colors=background_color, k=key, image_filename=get_resource(filename), button_color=background_color, enable_events=True)
 
 
@@ -23,8 +24,8 @@ class DetailWindow(Window):
 
             sg.Column([
                 [sg.Multiline(background_color='#B2D5C0', pad=(0,0), default_text='Hello World', font=platform.get_font('setting_text'), k='-TXT-', size=(40, 16), no_scrollbar=True, enable_events=True)],
-                [sg.T('Enter以添加新行', text_color='#E6E6FA', font=platform.get_font('hint')), sg.T(' '), 
-                sg.T('Ctrl-Enter提交文本修改', text_color='#E6E6FA', font=platform.get_font('hint')), 
+                [sg.T(tr('Enter以添加新行'), text_color='#E6E6FA', font=platform.get_font('hint')), sg.T(' '), 
+                sg.T(tr('Ctrl-Enter提交文本修改'), text_color='#E6E6FA', font=platform.get_font('hint')), 
                 sg.B('', image_filename=get_resource('squarecheck.png'), button_color=background_color, mouseover_colors=background_color, pad=(0,0), k='-SUBMIT-', enable_events=True)],
             ], expand_y=True)]])
         ]]
@@ -32,7 +33,7 @@ class DetailWindow(Window):
 
     @classmethod
     def init(cls):
-        cls.window = sg.Window('库存详情', layout=cls.build(), enable_close_attempted_event=True, finalize=True)
+        cls.window = sg.Window(tr('库存详情'), layout=cls.build(), enable_close_attempted_event=True, finalize=True)
         cls.window['-TXT-'].Widget.bind('<Control Return>', cls.update_list)
         cls.window['-TXT-'].bind('<Key-BackSpace>', '*BACK*')
         cls.window['-TXT-'].set_focus(True)
@@ -63,10 +64,10 @@ class DetailWindow(Window):
         if copier:
             cls.window['-DETAIL_LIST-'].update(copier, set_to_index=0)
         else:
-            cls.window['-DETAIL_LIST-'].update(['No data here...'], set_to_index=0)
+            cls.window['-DETAIL_LIST-'].update([tr('目前无数据...')], set_to_index=0)
 
     @classmethod
-    def loop(cls):
+    def loop(cls, parent=None):
         window = cls.window
         cls.set_source()
 

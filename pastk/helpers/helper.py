@@ -15,6 +15,7 @@ copier = []
 root = Path(__file__).parent.parent.parent
 resources = root / 'resources'
 music_dir = resources / 'musics'
+lang_dir = resources / "lang"
 
 supported_musics = ['.mp3', '.wav']
 

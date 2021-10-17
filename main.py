@@ -15,6 +15,8 @@ def main():
         if handle_type in handlers:
             set_input_pos()
             handlers[handle_type]()
+        if handle_type == 3:
+            continue
         if configure['one_piece'].active_value or handle_type == 1:
             break
 

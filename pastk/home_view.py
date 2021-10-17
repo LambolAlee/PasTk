@@ -12,6 +12,7 @@ from pyperclip import paste
 from threading import Thread
 from playsound import playsound
 
+from .config.configure import tr
 from .config_view import configure
 from .abstract_window import Window
 from .config_view import ConfigWindow
@@ -45,7 +46,7 @@ class HomeWindow(Window):
     def init(cls):
         cls.report('Initializing home window')
         x = (sg.Window.get_screen_size()[0] - 264) // 2
-        cls.window = sg.Window('连续复制', layout=cls.build(), location=(x, 0), keep_on_top=True, enable_close_attempted_event=True, finalize=True)
+        cls.window = sg.Window(tr('连续复制'), layout=cls.build(), location=(x, 0), keep_on_top=True, enable_close_attempted_event=True, finalize=True)
         cls.window['-SET-'].Widget.config(takefocus=0)
         cls.window['-RESET-'].Widget.config(takefocus=0)
         cls.window['-DETAIL-'].Widget.config(takefocus=0)
@@ -56,15 +57,15 @@ class HomeWindow(Window):
     @classmethod
     def build(cls):
         layout_home = [
-            [sg.T('0 0', font=platform.get_font('big'), pad=(0,5), justification='right', k='-COUNTER-'), sg.Column([[sg.T(' ')], [sg.T('条已复制', font=platform.get_font('home_hint'), text_color='#d1cfa3')]], pad=(0,5)), sg.T(' ', size=(6,1)), sg.Column([[sg.B('', k='-DETAIL-', enable_events=True, image_filename=get_resource('detail.png'), button_color=background_color, image_subsample=2, mouseover_colors=background_color)], [sg.T(' ')]])],
-            [sg.Frame('', [[Image_B('-SET-', 'settings.png'), sg.T(' ', background_color='#a6a6b9'), sg.B('开始', k='-START-', size=(10, 1), button_color=('white', '#464d64'), mouseover_colors=('white', '#575d70'), focus=True), sg.T(' ', background_color='#a6a6b9'), Image_B('-RESET-', 'reset.png', disabled=True)]], background_color='#a6a6b9')]
+            [sg.T('0 0', font=platform.get_font('big'), pad=(0,5), justification='right', k='-COUNTER-'), sg.Column([[sg.T(' ')], [sg.T(tr('条已复制'), font=platform.get_font('home_hint'), text_color='#d1cfa3')]], pad=(0,5)), sg.T(' ', size=(7,1)), sg.Column([[sg.B('', k='-DETAIL-', enable_events=True, image_filename=get_resource('detail.png'), button_color=background_color, image_subsample=2, mouseover_colors=background_color)], [sg.T(' ')]])],
+            [sg.Frame('', [[Image_B('-SET-', 'settings.png'), sg.T(' ', background_color='#a6a6b9'), sg.B(tr('开始'), k='-START-', size=(10, 1), button_color=('white', '#464d64'), mouseover_colors=('white', '#575d70'), focus=True), sg.T(' ', background_color='#a6a6b9'), Image_B('-RESET-', 'reset.png', disabled=True)]], background_color='#a6a6b9')]
         ]
 
         layout_mode = [
-            [B_mode('合并粘贴', '-HE_BING-')],
-            [B_mode('分段粘贴', '-FEN_DUAN-')],
-            [B_mode('连续粘贴', '-LIAN_XU-')],
-            [B_mode('选择粘贴', '-XUAN_ZE-')]
+            [B_mode(tr('合并粘贴'), '-HE_BING-')],
+            [B_mode(tr('分段粘贴'), '-FEN_DUAN-')],
+            [B_mode(tr('连续粘贴'), '-LIAN_XU-')],
+            [B_mode(tr('选择粘贴'), '-XUAN_ZE-')]
         ]
 
         cls.layout = [
@@ -137,6 +138,8 @@ class HomeWindow(Window):
                 return 2    # return to the home view
         elif e == '-QUIT-':
             return 1    # quit the app
+        elif e == '*RELAUNCH*':
+            return 3    # relaunch the app
         else:
             return 0    # other events
 
@@ -147,11 +150,12 @@ class HomeWindow(Window):
         cls.window['-MODE-'].update(visible=not cls.home_frame_visible)
 
     @classmethod
-    def loop(cls):
+    def loop(cls, parent=None):
         cls.count = 0
         copier.clear()
         window: sg.Window = cls.window
         started = False
+        title = tr('连续复制')
 
         while True:
             e, v = window.read()
@@ -164,6 +168,9 @@ class HomeWindow(Window):
             elif status_code == 2:
                 cls.toggle_frame()
                 continue
+            elif status_code == 3:
+                configure['lang'].load()
+                return status_code
 
             if e == '*NEW_CONTENT*':
                 cls.report(v[e])
@@ -172,20 +179,20 @@ class HomeWindow(Window):
                 if cls.count > 99:
                     cls.count = 99
                     window.ding()
-                    sg.popup_ok('亲，已经到达数量上限了哦！', title='连续复制')
+                    sg.popup_ok(tr('亲，已经到达数量上限了哦！'), title=title)
                     continue
                 cls.update_digital()
 
             elif e in ('-START-', '-RESET-'):
                 if started:
                     started = False
-                    window['-START-'].update('开始')
+                    window['-START-'].update(tr('开始'))
                     window['-RESET-'].update(disabled=True)
                     cls.quit_listener()
 
                     if e == '-START-':
                         if copier == []:
-                            sg.popup_notify('没有复制任何文字，请重新开始！', title='连续复制', location=(window.get_screen_size()[0]-364, 0))
+                            sg.popup_notify(tr('没有复制任何文字，请重新开始！'), title=title, location=(window.get_screen_size()[0]-364, 0))
                             continue
                         if configure['over_music'].active_value:
                             playsound_thread(music_dir / 'launch' / 'over_music.wav')
@@ -197,7 +204,7 @@ class HomeWindow(Window):
                         window['-COUNTER-'].update('0 0')
                 else:
                     started = True
-                    window['-START-'].update('结束')
+                    window['-START-'].update(tr('结束'))
                     window['-RESET-'].update(disabled=False)
                     cls.start_listener()
 
@@ -208,7 +215,7 @@ class HomeWindow(Window):
 
             elif e == '-SET-':
                 if started:
-                    sg.popup_auto_close('请先结束复制再修改配置！', title='连续复制', auto_close_duration=1)
+                    sg.popup_auto_close(tr('请先结束复制再修改配置！'), title=title, auto_close_duration=1)
                     continue
                 ConfigWindow.run_loop(window)
 

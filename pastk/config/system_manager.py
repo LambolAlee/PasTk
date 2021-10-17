@@ -1,4 +1,5 @@
 from platform import system
+from pynput.keyboard import Key
 
 
 class Platform:
@@ -29,11 +30,10 @@ class Platform:
 
     def init_by_sys(self):
         self.icon_suffix = '.png'
-        # self.switch_app_keys = ('command', 'tab')
-        self.paste_keys = ('ctrl', 'v')
+        self.modifier = Key.ctrl
 
         if self.sys_name == 'Darwin':
-            self.paste_keys = ('command', 'v')
+            self.modifier = Key.cmd
         elif self.sys_name == 'Windows':
             self.icon_suffix = '_128.png'
 

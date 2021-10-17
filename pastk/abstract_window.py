@@ -6,6 +6,7 @@ class Window:
     sg.theme('DarkBlue8')
     layout = []
     window = None
+    
     @classmethod
     def init(cls):
         pass
@@ -25,7 +26,7 @@ class Window:
                 cls.init()
             else:
                 cls.window.un_hide()
-            return cls.loop()
+            return cls.loop(parent)
 
         if parent is not None:
             parent.hide()
@@ -36,7 +37,7 @@ class Window:
         return ret
 
     @classmethod
-    def loop(cls):
+    def loop(cls, parent=None):
         pass
 
     @classmethod
