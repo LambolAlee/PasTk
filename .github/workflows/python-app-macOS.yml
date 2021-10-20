@@ -9,7 +9,7 @@ on:
     paths:
       - 'main.py'
       - 'pastk/**'
-      - '.github/workflows/**'
+      - '.github/workflows/python-app-macOS.yml'
   pull_request:
     branches: [ main ]
     paths:
