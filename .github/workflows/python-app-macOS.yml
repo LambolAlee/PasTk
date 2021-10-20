@@ -38,7 +38,7 @@ jobs:
         python setup.py py2app
     - name: Copy necessary files to the dist directory
       run: |
-        cp -r {resources,settings.json} dist/${{github.event.repository.name}}.app/Contents/Resources/lib/python3.8/
+        cp -r {resources,settings.json} dist/${{github.event.repository.name}}.app/Contents/Resources/lib/python3.9/
         cp -r {LICENSE,README.md,README_zh.md,README_img} dist/
     - name: Upload artifact
       uses: actions/upload-artifact@v2
