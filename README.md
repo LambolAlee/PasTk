@@ -68,7 +68,7 @@ This project has deployed [Github Action](https://github.com/LambolAlee/PasTk/ac
 	<img src="https://img.shields.io/badge/HELP-WANTED-%236699FF"/>
 </p>
 
-(*There is a puzzling problem I met when packaging the program, for detail you can see this [issue]()*)
+(*There is a puzzling problem I met when packaging the program, for detail you can see this [issue](https://github.com/LambolAlee/PasTk/issues/1)*)
 
 **For now**, there is another method which is even more convenient comparing to double clickcing the .app file. You can download the source code directly and deploy it to your launch app such as [LaunchBar](https://www.obdev.at/products/launchbar/index.html) or [Alfred](https://www.alfredapp.com) or any other apps with similar functions.
 
