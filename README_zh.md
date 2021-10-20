@@ -69,7 +69,7 @@
 	<img src="https://img.shields.io/badge/HELP-WANTED-%236699FF"/>
 </p>
 
-（*在打包的时候遇到了一个狠迷人的问题，详情可移步 [issue]()*）
+（*在打包的时候遇到了一个狠迷人的问题，详情可移步 [issue](https://github.com/LambolAlee/PasTk/issues/1)*）
 
 虽然现在mac平台上打包问题还没有解决，但是也有另外的方式可以使用这个软件，而且可能会更加方便，对于直接双击运行来说。使用macOS 启动器，比如说大名鼎鼎的 [LaunchBar](https://www.obdev.at/products/launchbar/index.html) 和 [Alfred](https://www.alfredapp.com) 或者是其他任何有类似功能的软件。
 
