@@ -7,6 +7,9 @@
 	<a href="https://github.com/PySimpleGUI/PySimpleGUI.git">
 		<img src="https://img.shields.io/badge/PySimpleGUI-4.45.0-9cf" />
 	</a>
+	<a href="https://www.codefactor.io/repository/github/lambolalee/pastk">
+		<img src="https://www.codefactor.io/repository/github/lambolalee/pastk/badge" />
+	</a>
     <a href="https://github.com/LambolAlee/PasTk/actions/workflows/python-app-Windows.yml">
 		<img src="https://img.shields.io/github/workflow/status/LambolAlee/PasTk/Python%20application%20on%20Windows?label=CI&logo=github" />
 	</a>
