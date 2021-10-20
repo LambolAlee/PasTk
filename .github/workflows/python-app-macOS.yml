@@ -9,7 +9,7 @@ on:
     paths:
       - 'main.py'
       - 'pastk/**'
-      - '.github/workflows/python-app-macOS.yml'
+      - '.github/workflows/**'
   pull_request:
     branches: [ main ]
     paths:
@@ -24,10 +24,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.9.7
+    - name: Set up Python 3.8.10
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9.7
+        python-version: 3.8.10
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -38,7 +38,7 @@ jobs:
         python setup.py py2app
     - name: Copy necessary files to the dist directory
       run: |
-        cp -r {resources,settings.json} dist/${{github.event.repository.name}}.app/Contents/Resources/lib/python3.9/
+        cp -r {resources,settings.json} dist/${{github.event.repository.name}}.app/Contents/Resources/lib/python3.8/
         cp -r {LICENSE,README.md,README_zh.md,README_img} dist/
     - name: Upload artifact
       uses: actions/upload-artifact@v2
