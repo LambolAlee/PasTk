@@ -31,7 +31,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pyinstaller
+        pip install pyinstaller
         pip install -r requirements.txt
     - name: Package using pyinstaller
       id: package
@@ -41,6 +41,7 @@ jobs:
       run: |
         cp LICENSE dist/
         cp *md dist/
+        cp -r README_img/ dist/
         cp -r resources/ dist/${{github.event.repository.name}}/
     - name: Upload artifact
       uses: actions/upload-artifact@v2
